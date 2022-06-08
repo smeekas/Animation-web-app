@@ -1,0 +1,15 @@
+.animate{
+    display: flex;
+    flex-direction: row;
+    /* background-color: black; */
+    height: 100%;
+    align-items: stretch;
+}
+.core{
+    display: flex;
+flex: 1;
+    background-color: rgba(0,0,0,0.5);
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: stretch;
+}

@@ -1,0 +1,9 @@
+.frames{
+    background-color: rgba(0, 100, 0,0.3);
+    height: 250px;
+}
+.allFrames{
+    border:1px solid skyblue;
+    display: flex;
+    
+}
