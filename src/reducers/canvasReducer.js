@@ -5,6 +5,7 @@ const initialState = {
   eraser: false,
   image: null,
   grid: null,
+  line: false,
 };
 export const canvasReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -17,16 +18,19 @@ export const canvasReducer = (state = initialState, action) => {
       return { ...state, color: action.value };
     }
     case "FLOODFILL": {
-      return { ...state, flood: action.value };
+      return { ...state, flood: action.value, eraser: false, line: false };
     }
     case "ERASER": {
-      return { ...state, eraser: action.value };
+      return { ...state, eraser: action.value, flood: false, line: false };
     }
     case "IMAGE": {
       return { ...state, image: action.value };
     }
     case "GRID": {
       return { ...state, grid: action.grid };
+    }
+    case "LINE": {
+      return { ...state, line: action.value, flood: false, eraser: false };
     }
     default:
       return state;

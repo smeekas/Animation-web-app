@@ -16,15 +16,164 @@ class Grid {
     this.cellH = CANVASH / columns;
     this.cellW = CANVASW / rows;
     // console.log(this.cellH, this.cellW);
+
     this.color = "red";
     this.fill = "blue";
     this.grid = [];
+    this.prevColorOfLine = [];
     for (let i = 0; i < rows; i++) {
       this.grid.push([]);
       for (let j = 0; j < columns; j++) {
         this.grid[i].push("#ffffff");
       }
     }
+  }
+  initLine(cX, cY, left, top) {
+    [this.lineX, this.lineY] = this.getPixel(cX, cY, left, top);
+    // console.log("DOWN");
+  }
+  drawLine(cX, cY, left, top) {
+    // console.log(e.target);
+    let [endX, endY] = this.getPixel(cX, cY, left, top);
+    // this.lineAlgo(endX, endY);
+    this.draw_line(this.lineX, this.lineY, endX, endY);
+    // console.log("MOVE");
+  }
+  finishLine(cX, cY, left, top) {
+    let [endX, endY] = this.getPixel(cX, cY, left, top);
+    // this.lineAlgo(endX, endY);
+    this.draw_line(this.lineX, this.lineY, endX, endY);
+    this.prevColorOfLine = [];
+
+    // console.log("UP");
+  }
+  lineAlgo(x2, y2) {
+    console.log("line");
+    let x1 = this.lineX;
+    let y1 = this.lineY;
+    let dx = x2 - x1;
+    let dy = y2 - y1;
+    let p = 2 * dy - dx;
+    while (x1 <= x2) {
+      this.grid[x1][y1] = "black";
+      this.drawGrid();
+      x1++;
+      if (p < 0) {
+        p = p + 2 * dy;
+      } else {
+        p += 2 * dy - 2 * dx;
+        y1++;
+      }
+    }
+  }
+
+  draw_line(x1, y1, x2, y2) {
+    let pixelarr = [];
+    // Iterators, counters required by algorit
+    let x, y, dx, dy, dx1, dy1, px, py, xe, ye, i; // Calculate line deltas
+    dx = x2 - x1;
+    dy = y2 - y1; // Create a positive copy of deltas (makes iterating easier)
+    dx1 = Math.abs(dx);
+    dy1 = Math.abs(dy); // Calculate error intervals for both axis
+    px = 2 * dy1 - dx1;
+    py = 2 * dx1 - dy1; // The line is X-axis dominant
+    if (dy1 <= dx1) {
+      // Line is drawn left to right
+      if (dx >= 0) {
+        x = x1;
+        y = y1;
+        xe = x2;
+      } else {
+        // Line is drawn right to left (swap ends)
+        x = x2;
+        y = y2;
+        xe = x1;
+      }
+      // this.grid[x][y] = "black";
+      pixelarr.push({ x: x, y: y });
+      // this.drawGrid();
+      //pixel(x, y); // Draw first pixel        // Rasterize the line
+      for (i = 0; x < xe; i++) {
+        x = x + 1; // Deal with octants...
+        if (px < 0) {
+          px = px + 2 * dy1;
+        } else {
+          if ((dx < 0 && dy < 0) || (dx > 0 && dy > 0)) {
+            y = y + 1;
+          } else {
+            y = y - 1;
+          }
+          px = px + 2 * (dy1 - dx1);
+        } // Draw pixel from line span at
+        // currently rasterized position
+        // this.grid[x][y] = "black";
+        pixelarr.push({ x: x, y: y });
+        // this.drawGrid();
+        // pixel(x, y);
+      }
+    } else {
+      // The line is Y-axis dominant        // Line is drawn bottom to top
+      if (dy >= 0) {
+        x = x1;
+        y = y1;
+        ye = y2;
+      } else {
+        // Line is drawn top to bottom
+        x = x2;
+        y = y2;
+        ye = y1;
+      }
+      // this.grid[x][y] = "black";
+      pixelarr.push({ x: x, y: y });
+      // this.drawGrid();
+      //  pixel(x, y); // Draw first pixel        // Rasterize the line
+      for (i = 0; y < ye; i++) {
+        y = y + 1; // Deal with octants...
+        if (py <= 0) {
+          py = py + 2 * dx1;
+        } else {
+          if ((dx < 0 && dy < 0) || (dx > 0 && dy > 0)) {
+            x = x + 1;
+          } else {
+            x = x - 1;
+          }
+          py = py + 2 * (dx1 - dy1);
+        } // Draw pixel from line span at
+        // currently rasterized position
+        // pixel(x, y);
+        // this.grid[x][y] = "black";
+        pixelarr.push({ x: x, y: y });
+        // this.drawGrid();
+      }
+    }
+    this.colorLine(pixelarr);
+  }
+  colorLine(arr) {
+    //color prev
+    // console.log(arr);
+    this.prevColorOfLine.forEach((item) => {
+      this.grid[item.x][item.y] = item.color;
+    });
+
+    //color new
+    this.prevColorOfLine = [];
+    arr.forEach((item) => {
+      this.prevColorOfLine.push({
+        x: item.x,
+        y: item.y,
+        color: this.grid[item.x][item.y],
+      });
+      this.grid[item.x][item.y] = "black";
+    });
+    this.drawGrid();
+    //add new to prev
+  }
+  getPixel(cX, cY, left, top) {
+    const clientX = cX - left;
+    const clientY = cY - top;
+    let r = Math.floor(clientY / this.cellW);
+    let c = Math.floor(clientX / this.cellH);
+    return [r, c];
   }
   addCanvas(c) {
     // console.log(c);
@@ -56,6 +205,7 @@ class Grid {
   drawGrid() {
     // console.log(this.cellH, this.cellW);
     this.c.clearRect(0, 0, CANVASW, CANVASH);
+    console.log("draw");
     let i = 0,
       j = 0;
     for (i = 0; i < this.rows; i++) {
@@ -208,7 +358,7 @@ class Grid {
     return this.grid;
   }
 }
-const grid = new Grid(25, 25);
+const grid = new Grid(50, 50);
 store.dispatch({ type: "GRID", grid: grid });
 // console.log(storeData.canvas);
 export default grid;

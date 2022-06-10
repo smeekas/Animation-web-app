@@ -1,9 +1,20 @@
-.frames{
-    background-color: rgba(0, 100, 0,0.3);
-    height: 250px;
+.frames {
+  background-color: rgba(0, 100, 0, 0.3);
+  height: 250px;
+  position: relative;
 }
-.allFrames{
-    border:1px solid skyblue;
-    display: flex;
-    
+.allFrames {
+  max-width: 80%;
+  list-style: none;
+  border: 1px solid skyblue;
+  display: flex;
+  justify-content: flex-start;
+  /* flex-wrap: wrap; */
+  /* overflow-x: scroll;
+  position: absolute; */
+  overflow-x: scroll;
+  overflow-y: hidden;
 }
+/* .childAllFrames {
+  display: flex;
+} */

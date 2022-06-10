@@ -1,13 +1,13 @@
 import store from "../store";
-let imgs, grid, canvasRef;
+let allFrames, grid, canvasRef;
 var cStream,
   recorder,
   chunks = [];
 
 export function startRecord() {
   // this.textContent = "stop recording";
-console.log("HERE");
-  imgs = store.getState().frames.frames.map((item) => item.image);
+  console.log("HERE");
+  allFrames = store.getState().frames.frames.map((item) => item.grid);
   grid = store.getState().canvas.grid;
   canvasRef = store.getState().canvas.canvasRef;
   // set the framerate to 30FPS
@@ -15,30 +15,22 @@ console.log("HERE");
   // create a recorder fed with our canvas' stream
   recorder = new MediaRecorder(cStream);
   // start it
+
   recorder.start();
+  anim();
   // save the chunks
   recorder.ondataavailable = saveChunks;
 
   recorder.onstop = exportStream;
-  //   // change our button's function
-  //   this.onclick = stopRecording;
+  // change our button's function
 }
-async function updateCanvas() {
-  console.log("updated");
-  let i = 0;
-  const si = setInterval(() => {
-    if (i < imgs.length) {
-      grid.drawFrame(imgs[i++]);
-    } else {
-      clearInterval(si);
-      stopRecording();
-    }
-  }, 50);
-}
+// async function updateCanvas() {
+//   console.log("updated");
+// }
 
 function saveChunks(e) {
   // console.log(e.data);
-  updateCanvas();
+  // updateCanvas();
   chunks.push(e.data);
 }
 
@@ -52,27 +44,46 @@ function exportStream(e) {
   var blob = new Blob(chunks);
   // do something with this blob
   var vidURL = URL.createObjectURL(blob);
+  console.log(blob);
   var vid = document.createElement("video");
   vid.controls = true;
   vid.src = vidURL;
   vid.onended = function () {
     URL.revokeObjectURL(vidURL);
   };
+  //!----------------------------------------------------------
+  // const image = canvasRef
+  //   .toDataURL("image/png")
+  //   .replace("image/png", "image/octet-stream"); // here is the most important part because if you dont replace you will get a DOM 18 exception.
+  const anchor = document.createElement("a");
+  anchor.href = vidURL;
+  anchor.download = "vid.mp4";
+  anchor.click();
   // document.body.insertBefore(vid, canvas);
 }
 
-// make something move on the canvas
 // var x = 0;
-// var ctx = canvas.getContext('2d');
+// var ctx = store.getState().canvas.canfasRef;
+// let record = true;
+let nc = 0;
+var anim = function () {
+  const to = setInterval(() => {
+    if (nc === allFrames.length) {
+      clearInterval(to);
+      stopRecording();
+    }
+    console.log("here");
+    grid.drawFrame(allFrames[nc]);
+    nc++;
+    // ctx.clearRect(0, 0, 500, 200);
+    // ctx.fillStyle = "ivory";
+    // ctx.fillRect(0, 0, 500, 200);
+    // ctx.fillStyle = "black";
+    // ctx.fillRect(getRand() * 300, getRand() * 100, 50, 50);
+  }, 1000);
+};
 
-// var anim = function() {
-//   x = (x + 2) % (canvas.width + 100);
-//   // there is no transparency in webm,
-//   // so we need to set a background otherwise every transparent pixel will become opaque black
-//   ctx.fillStyle = 'ivory';
-//   ctx.fillRect(0, 0, canvas.width, canvas.height);
-//   ctx.fillStyle = 'black';
-//   ctx.fillRect(x - 50, 20, 50, 50)
-//   requestAnimationFrame(anim);
-// };
 // anim();
+function getRand() {
+  return Math.random();
+}

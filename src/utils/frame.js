@@ -14,6 +14,6 @@ export function getCanvasGrid() {
       newGrid[i].push(gg[i][j]);
     }
   }
-  // console.log(gg);
+  
   return newGrid;
 }

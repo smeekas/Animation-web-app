@@ -27,9 +27,9 @@ function Frame({ image, grid, index }) {
     gridObj.addFrame(grid);
   };
   return (
-    <div className={styles.frame} onClick={frameClickHandler}>
+    <li className={styles.frame} onClick={frameClickHandler}>
       <img src={image} alt={index} />
-    </div>
+    </li>
   );
 }
 export default Frame;

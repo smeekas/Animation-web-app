@@ -2,7 +2,6 @@ import { useDispatch, useSelector } from "react-redux";
 import Frame from "../Frame/Frame";
 import { getCanvasGrid, getCanvasImage } from "../../utils/frame";
 import styles from "./FramesNControl.module.css";
-import { Children } from "react";
 function FramesNControl() {
   const allFrames = useSelector((state) => state.frames.frames);
   // const canvasRef = useSelector((state) => state.canvas.canvasRef);
@@ -16,6 +15,7 @@ function FramesNControl() {
     //   .replace("image/png", "image/octet-stream");
     const gridArr = getCanvasGrid();
     const image = getCanvasImage();
+    console.log();
     // const newGrid = [];
     // for (let i = 0; i < gridArr.length; i++) {
     //   newGrid.push([]);
@@ -29,7 +29,7 @@ function FramesNControl() {
       payload: { image: image, grid: gridArr },
     });
   };
-  
+
   // console.log(currIndex, allFrames.length - 1);
   return (
     <div className={styles.frames}>
@@ -40,9 +40,8 @@ function FramesNControl() {
         Add frame
       </button>
 
-      <div className={styles.allFrames}>
+      <ul className={styles.allFrames}>
         {allFrames.map((frame, index) => {
-          // console.log(index, frame.image);
           return (
             <Frame
               index={index}
@@ -52,7 +51,7 @@ function FramesNControl() {
             />
           );
         })}
-      </div>
+      </ul>
     </div>
   );
 }

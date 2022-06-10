@@ -7,6 +7,7 @@ function Controls() {
   const canvasRef = useSelector((state) => state.canvas.canvasRef);
   const grid = useSelector((state) => state.canvas.grid);
   const allFrames = useSelector((state) => state.frames.frames);
+  const allControl = useSelector((state) => state.canvas);
   const colorHandler = (e) => {
     dispatch({ type: "COLOR", value: e.target.value });
   };
@@ -16,7 +17,9 @@ function Controls() {
   const eraserHandler = (e) => {
     dispatch({ type: "ERASER", value: e.target.checked });
   };
-
+  const lineHandler = (e) => {
+    dispatch({ type: "LINE", value: e.target.checked });
+  };
   return (
     <div className={styles.controls}>
       <section>
@@ -30,22 +33,30 @@ function Controls() {
       <section>
         <p>flood fill: </p>
         <input
+          checked={allControl.flood}
           onChange={(e) => floodfillHandler(e)}
           id="flood"
-          value="on"
           type="checkbox"
         />
       </section>
       <section>
         <p>eraser: </p>
+      </section>
+      <input
+        onChange={(e) => eraserHandler(e)}
+        id="eraser"
+        checked={allControl.eraser}
+        type="checkbox"
+      />
+      <section>
+        <p>Line:</p>
         <input
-          onChange={(e) => eraserHandler(e)}
-          id="eraser"
-          value="on"
+          onChange={(e) => lineHandler(e)}
+          id="line"
+          checked={allControl.line}
           type="checkbox"
         />
       </section>
-
       <section>
         <button
           onClick={() => {
