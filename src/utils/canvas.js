@@ -163,7 +163,7 @@ class Grid {
         y: item.y,
         color: this.grid[item.x][item.y],
       });
-      this.grid[item.x][item.y] = "black";
+      this.grid[item.x][item.y] = this.getColor();
     });
     this.drawGrid();
     //add new to prev
@@ -282,7 +282,7 @@ class Grid {
       r: r,
       c: c,
     });
-    let maxlen = 0;
+
     // while (queue.length != 0) {
     //   if (queue.length > maxlen) {
     //     maxlen = queue.length;
@@ -358,7 +358,7 @@ class Grid {
     return this.grid;
   }
 }
-const grid = new Grid(50, 50);
+const grid = new Grid(40, 40);
 store.dispatch({ type: "GRID", grid: grid });
 // console.log(storeData.canvas);
 export default grid;

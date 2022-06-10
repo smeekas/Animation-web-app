@@ -8,8 +8,9 @@
 .core{
     display: flex;
 flex: 1;
-    background-color: rgba(0,0,0,0.5);
+    background-color: #142850;
     flex-direction: column;
+    
     /* justify-content: center; */
-    align-items: stretch;
+    /* align-items: stretch; */
 }

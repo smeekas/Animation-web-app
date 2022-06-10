@@ -27,66 +27,72 @@ function Canvas() {
   }, [dispatch]);
   // useEffect(() => {s}, [canva]);
   return (
-    <div className={styles.canvas}>
-      <canvas
-        onPointerMove={(e) => {
-          if (allControl.line && e.buttons === 1) {
-            grid.drawLine(
-              e.clientX,
-              e.clientY,
-              e.target.offsetLeft,
-              e.target.offsetTop
-            );
+    <div className={styles.canvasDiv}>
+      <div className={styles.canvas}>
+        <canvas
+          onPointerMove={(e) => {
+            if (allControl.line && e.buttons === 1) {
+              grid.drawLine(
+                e.clientX,
+                e.clientY,
+                e.target.offsetLeft,
+                e.target.offsetTop
+              );
 
-            return;
-          }
-          grid.getPosition(e);
-        }}
-        onMouseDown={(e) => {
-          e.preventDefault();
-          // console.log(e);
-          if (allControl.line) {
-            grid.initLine(
-              e.clientX,
-              e.clientY,
-              e.target.offsetLeft,
-              e.target.offsetTop
-            );
+              return;
+            }
+            if (allControl.eraser || allControl.pencil) {
+              grid.getPosition(e);
+            }
+          }}
+          onMouseDown={(e) => {
+            e.preventDefault();
+            // console.log(e);
+            if (allControl.line) {
+              grid.initLine(
+                e.clientX,
+                e.clientY,
+                e.target.offsetLeft,
+                e.target.offsetTop
+              );
 
-            return;
-          }
-          grid.clicked(e);
-        }}
-        onMouseUp={(e) => {
-          if (allControl.line) {
-            grid.finishLine(
-              e.clientX,
-              e.clientY,
-              e.target.offsetLeft,
-              e.target.offsetTop
-            );
-          }
-        }}
-        // onMouseLeave={(e) => {
-        //   console.log(currIndex);
-        //   if (currIndex != null) {
-        //     dispatch({
-        //       type: "FRAME_UPDATE",
-        //       index: currIndex,
-        //       grid: getCanvasGrid(),
-        //       image: getCanvasImage(),
-        //     });
-        //   }
-        // }}
-        ref={canvasRef}
-      ></canvas>
-      <section className={styles.op}>
-        {videoSrc && (
-          <video controls>
-            <source src={videoSrc} type="videp/mp4" />
-          </video>
-        )}
-      </section>
+              return;
+            }
+            if (allControl.eraser || allControl.pencil) {
+              grid.clicked(e);
+            }
+          }}
+          onMouseUp={(e) => {
+            if (allControl.line) {
+              grid.finishLine(
+                e.clientX,
+                e.clientY,
+                e.target.offsetLeft,
+                e.target.offsetTop
+              );
+            }
+          }}
+          // onMouseLeave={(e) => {
+          //   console.log(currIndex);
+          //   if (currIndex != null) {
+          //     dispatch({
+          //       type: "FRAME_UPDATE",
+          //       index: currIndex,
+          //       grid: getCanvasGrid(),
+          //       image: getCanvasImage(),
+          //     });
+          //   }
+          // }}
+          ref={canvasRef}
+        ></canvas>
+        <section className={styles.op}>
+          {videoSrc && (
+            <video controls>
+              <source src={videoSrc} type="videp/mp4" />
+            </video>
+          )}
+        </section>
+      </div>
     </div>
   );
 }

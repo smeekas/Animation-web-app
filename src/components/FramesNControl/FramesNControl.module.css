@@ -1,11 +1,12 @@
 .frames {
-  background-color: rgba(0, 100, 0, 0.3);
+  background-color: #27496D;
   height: 250px;
   position: relative;
 }
 .allFrames {
   max-width: 80%;
   list-style: none;
+  margin:0;
   border: 1px solid skyblue;
   display: flex;
   justify-content: flex-start;
