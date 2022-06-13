@@ -11,43 +11,57 @@ function Canvas() {
   const currIndex = useSelector((state) => state.frames.currFrame);
   const videoSrc = useSelector((state) => state.export.videoBlob);
   const allControl = useSelector((state) => state.canvas);
-  // const [canva, setCanva] = useState(null);
   useEffect(() => {
-    // console.log()
     dispatch({
       type: "CANVAS_INIT",
       canvasRef: canvasRef.current,
     });
-    canvasRef.current.width = 300;
-    canvasRef.current.height = 300;
+    canvasRef.current.width = Number(process.env.REACT_APP_CANVAS_DIAMENTION);
+    canvasRef.current.height = Number(process.env.REACT_APP_CANVAS_DIAMENTION);
     if (!grid.c) {
-      // console.log("ADD");
       grid.addCanvas(canvasRef.current.getContext("2d"));
     }
   }, [dispatch]);
-  // useEffect(() => {s}, [canva]);
   return (
     <div className={styles.canvasDiv}>
       <div className={styles.canvas}>
         <canvas
           onPointerMove={(e) => {
-            if (allControl.line && e.buttons === 1) {
-              grid.drawLine(
-                e.clientX,
-                e.clientY,
-                e.target.offsetLeft,
-                e.target.offsetTop
-              );
+            if (e.buttons === 1) {
+              if (allControl.line) {
+                grid.drawLine(
+                  e.clientX,
+                  e.clientY,
+                  e.target.offsetLeft,
+                  e.target.offsetTop
+                );
 
-              return;
-            }
-            if (allControl.eraser || allControl.pencil) {
-              grid.getPosition(e);
+                return;
+              }
+              // if (allControl.eraser || allControl.pencil) {
+              //   grid.getPosition(e);
+              //   return;
+              // }
+              if (allControl.pencil) {
+                grid.pencil(e);
+                return;
+              }
+              if (allControl.eraser) {
+                grid.erase(e);
+                return;
+              }
+              if (allControl.ellipse) {
+                grid.drawEllipse(
+                  e.clientX,
+                  e.clientY,
+                  e.target.offsetLeft,
+                  e.target.offsetTop
+                );
+              }
             }
           }}
           onMouseDown={(e) => {
             e.preventDefault();
-            // console.log(e);
             if (allControl.line) {
               grid.initLine(
                 e.clientX,
@@ -58,8 +72,29 @@ function Canvas() {
 
               return;
             }
-            if (allControl.eraser || allControl.pencil) {
-              grid.clicked(e);
+            // if (allControl.eraser || allControl.pencil) {
+            //   grid.pencil(e);
+            //   return;
+            // }
+            if (allControl.pencil) {
+              grid.pencil(e);
+              return;
+            }
+            if (allControl.eraser) {
+              grid.erase(e);
+              return;
+            }
+            if (allControl.flood) {
+              grid.floodfill(e);
+              return;
+            }
+            if (allControl.ellipse) {
+              grid.initEllipse(
+                e.clientX,
+                e.clientY,
+                e.target.offsetLeft,
+                e.target.offsetTop
+              );
             }
           }}
           onMouseUp={(e) => {
@@ -70,19 +105,34 @@ function Canvas() {
                 e.target.offsetLeft,
                 e.target.offsetTop
               );
+              return;
+            }
+            if (allControl.ellipse) {
+              grid.finishEllipse(
+                e.clientX,
+                e.clientY,
+                e.target.offsetLeft,
+                e.target.offsetTop
+              );
             }
           }}
-          // onMouseLeave={(e) => {
-          //   console.log(currIndex);
-          //   if (currIndex != null) {
-          //     dispatch({
-          //       type: "FRAME_UPDATE",
-          //       index: currIndex,
-          //       grid: getCanvasGrid(),
-          //       image: getCanvasImage(),
-          //     });
-          //   }
-          // }}
+          onMouseLeave={(e) => {
+            if (e.buttons === 1) {
+              if (allControl.line) {
+                grid.cancelLine();
+                return;
+              }
+              if (allControl.ellipse) {
+                grid
+                  .cancelEllipse
+                  // e.clientX,
+                  // e.clientY,
+                  // e.target.offsetLeft,
+                  // e.target.offsetTop
+                  ();
+              }
+            }
+          }}
           ref={canvasRef}
         ></canvas>
         <section className={styles.op}>

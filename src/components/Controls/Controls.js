@@ -4,9 +4,11 @@ import eraser from "../../assets/eraser.png";
 import pencil from "../../assets/pencil.png";
 import paintBucket from "../../assets/paintBucket.png";
 import diagonalLine from "../../assets/diagonalLine.png";
+import ellipse from "../../assets/ellipse.png";
 import colorWheel from "../../assets/colorWheel.png";
 import { startRecord } from "../../utils/export";
 import styles from "./Controls.module.css";
+import Control from "../../Control/Control";
 function Controls() {
   const dispatch = useDispatch();
   const canvasRef = useSelector((state) => state.canvas.canvasRef);
@@ -17,6 +19,7 @@ function Controls() {
   const lineRef = useRef();
   const colorRef = useRef();
   const pencilRef = useRef();
+  const ellipseRef = useRef();
   const allControl = useSelector((state) => state.canvas);
   const colorHandler = (e) => {
     dispatch({ type: "COLOR", value: e.target.value });
@@ -33,17 +36,30 @@ function Controls() {
   const pencilHandler = (e) => {
     dispatch({ type: "PENCIL", value: e.target.checked });
   };
+  const ellipseHandler = (e) => {
+    dispatch({ type: "ELLIPSE", value: e.target.checked });
+  };
   return (
     <div className={styles.controls}>
       <div className={styles.drawControl}>
-        <section data-tooltip="Paint Bucket">
+        <Control
+          tooltipName="Paint Bucket"
+          imgSrc={paintBucket}
+          imgAlt="paint bucket"
+          onClick={() => floodfillRef.current.click()}
+          onChange={(e) => floodfillHandler(e)}
+          checked={allControl.flood}
+          ref={floodfillRef}
+          type="checkbox"
+        />
+        {/* <section data-tooltip="Paint Bucket">
           <img
             className={`${styles.drawControlImage} ${
               allControl.flood && styles.checked
             }`}
             alt="paintbucket"
             src={paintBucket}
-            onClick={() => floodfillRef.current.click()}
+            // onClick={}
           />
 
           <input
@@ -54,9 +70,9 @@ function Controls() {
             id="flood"
             type="checkbox"
           />
-        </section>
+        </section> */}
 
-        <section data-tooltip="Freeshand">
+        {/* <section data-tooltip="Freeshand">
           <img
             className={`${styles.drawControlImage} ${
               allControl.pencil && styles.checked
@@ -74,9 +90,18 @@ function Controls() {
             id="flood"
             type="checkbox"
           />
-        </section>
-
-        <section data-tooltip="Eraser">
+        </section> */}
+        <Control
+          tooltipName="free hand"
+          imgSrc={pencil}
+          imgAlt="pencil"
+          onClick={() => pencilRef.current.click()}
+          onChange={(e) => pencilHandler(e)}
+          checked={allControl.pencil}
+          type="checkbox"
+          ref={pencilRef}
+        />
+        {/* <section data-tooltip="Eraser">
           <img
             className={`${styles.drawControlImage} ${
               allControl.eraser && styles.checked
@@ -93,8 +118,18 @@ function Controls() {
             checked={allControl.eraser}
             type="checkbox"
           />
-        </section>
-        <section data-tooltip="Line" className="line">
+        </section> */}
+        <Control
+          tooltipName="Eraser"
+          imgSrc={eraser}
+          imgAlt="eraser"
+          onClick={() => eraserRef.current.click()}
+          onChange={(e) => eraserHandler(e)}
+          checked={allControl.eraser}
+          type="checkbox"
+          ref={eraserRef}
+        />
+        {/* <section data-tooltip="Line">
           <img
             className={`${styles.drawControlImage} ${
               allControl.line && styles.checked
@@ -112,8 +147,47 @@ function Controls() {
             checked={allControl.line}
             type="checkbox"
           />
-        </section>
-        <section data-tooltip="Color Picker" className={styles.colorPicker}>
+        </section> */}
+        <Control
+          tooltipName="Line"
+          imgSrc={diagonalLine}
+          imgAlt="line"
+          onClick={() => lineRef.current.click()}
+          onChange={(e) => lineHandler(e)}
+          checked={allControl.line}
+          type="checkbox"
+          ref={lineRef}
+        />
+        {/* <section data-tooltip="ellipse">
+          <img
+            className={`${styles.drawControlImage} ${
+              allControl.ellipse && styles.checked
+            }`}
+            alt="ellipse"
+            src={ellipse}
+            onClick={() => ellipseRef.current.click()}
+          />
+
+          <input
+            ref={ellipseRef}
+            style={{ display: "none" }}
+            onChange={(e) => ellipseHandler(e)}
+            id="line"
+            checked={allControl.ellipse}
+            type="checkbox"
+          />
+        </section> */}
+        <Control
+          tooltipName="Ellipse"
+          imgSrc={ellipse}
+          imgAlt="ellipse"
+          onClick={() => ellipseRef.current.click()}
+          onChange={(e) => ellipseHandler(e)}
+          checked={allControl.ellipse}
+          type="checkbox"
+          ref={ellipseRef}
+        />
+        {/* <section data-tooltip="Color Picker" className={styles.colorPicker}>
           <img
             src={colorWheel}
             alt="colorwheel"
@@ -127,11 +201,21 @@ function Controls() {
             type="color"
             id="colorpicker"
           />
-        </section>
-        <section style={{backgroundColor:allControl.color}} className={styles.preview}>
-              
-        </section>
-
+        </section> */}
+        <Control
+          tooltipName="Color Picker"
+          imgSrc={colorWheel}
+          imgAlt="colorwheel"
+          onClick={() => colorRef.current.click()}
+          onChange={(e) => colorHandler(e)}
+          checked={false}
+          type="color"
+          ref={colorRef}
+        />
+        <section
+          style={{ backgroundColor: allControl.color }}
+          className={styles.preview}
+        ></section>
       </div>
       {/* <section>
         <button

@@ -7,6 +7,7 @@ const initialState = {
   grid: null,
   line: false,
   pencil: true,
+  ellipse: false,
 };
 export const canvasReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -25,6 +26,7 @@ export const canvasReducer = (state = initialState, action) => {
         eraser: false,
         line: false,
         pencil: false,
+        ellipse: false,
       };
     }
     case "ERASER": {
@@ -34,6 +36,7 @@ export const canvasReducer = (state = initialState, action) => {
         flood: false,
         line: false,
         pencil: false,
+        ellipse: false,
       };
     }
     case "IMAGE": {
@@ -49,12 +52,24 @@ export const canvasReducer = (state = initialState, action) => {
         flood: false,
         eraser: false,
         pencil: false,
+        ellipse: false,
       };
     }
     case "PENCIL": {
       return {
         ...state,
         pencil: action.value,
+        line: false,
+        flood: false,
+        eraser: false,
+        ellipse: false,
+      };
+    }
+    case "ELLIPSE": {
+      return {
+        ...state,
+        ellipse: true,
+        pencil: false,
         line: false,
         flood: false,
         eraser: false,
