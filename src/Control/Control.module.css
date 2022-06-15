@@ -9,7 +9,7 @@ section[data-tooltip]:hover::after {
   position: absolute;
   left: 50px;
   top: 10px;
-
+z-index: 11;
   min-width: 75px;
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 2px;

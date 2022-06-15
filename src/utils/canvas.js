@@ -346,7 +346,6 @@ class Grid {
         d2 = d2 + dx - dy + rx * rx;
       }
     }
-    console.log(pixelArr);
     this.colorCircleGrid(pixelArr);
   }
   finishEllipse(cX, cY, left, top) {
@@ -380,11 +379,16 @@ class Grid {
   getReduxState() {
     return store.getState();
   }
+  copyFrame(grid) {
+    this.grid = grid;
+    this.drawFrame(grid);
+  }
   addFrame(grid) {
     this.grid = grid;
     this.drawFrame(grid);
   }
   drawFrame(grid) {
+    // console.log(grid[0]);
     this.c.clearRect(0, 0, CANVASW, CANVASH);
     let i = 0,
       j = 0;
@@ -400,13 +404,26 @@ class Grid {
   }
   drawGrid() {
     this.c.clearRect(0, 0, CANVASW, CANVASH);
-    console.log("draw");
     let i = 0,
       j = 0;
     for (i = 0; i < this.rows; i++) {
       for (j = 0; j < this.columns; j++) {
         // console.log("HERE");
         this.c.fillStyle = this.grid[i][j];
+        // console.log(j * this.cellW, i * this.cellH);
+        this.c.fillRect(j * this.cellW, i * this.cellH, this.cellW, this.cellH);
+      }
+    }
+  }
+  drawBlank() {
+    this.c.clearRect(0, 0, CANVASW, CANVASH);
+    let i = 0,
+      j = 0;
+    for (i = 0; i < this.rows; i++) {
+      for (j = 0; j < this.columns; j++) {
+        // console.log("HERE");
+        this.grid[i][j] = "#ffffff";
+        this.c.fillStyle = "#ffffff";
         // console.log(j * this.cellW, i * this.cellH);
         this.c.fillRect(j * this.cellW, i * this.cellH, this.cellW, this.cellH);
       }
@@ -471,7 +488,7 @@ class Grid {
     const clientY = e.clientY - e.target.offsetTop;
     let r = Math.floor(clientY / this.cellW);
     let c = Math.floor(clientX / this.cellH);
-
+    console.log(r, c);
     const srcBg = this.grid[r][c];
 
     this.floodfillRecursive(r, c, srcBg, this.getColor());
@@ -502,6 +519,9 @@ class Grid {
     return this.grid;
   }
 }
-const grid = new Grid(40, 40);
+const grid = new Grid(
+  Number(process.env.REACT_APP_ROWS_COLUMNS),
+  Number(process.env.REACT_APP_ROWS_COLUMNS)
+);
 store.dispatch({ type: "GRID", grid: grid });
 export default grid;

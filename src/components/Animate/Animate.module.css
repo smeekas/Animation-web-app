@@ -1,15 +1,16 @@
 .animate{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     /* background-color: black; */
     height: 100%;
-    align-items: stretch;
+    position: relative;
+    /* align-items: stretch; */
 }
 .core{
     display: flex;
 flex: 1;
     background-color: #142850;
-    flex-direction: column;
+    flex-direction: row;
     
     /* justify-content: center; */
     /* align-items: stretch; */

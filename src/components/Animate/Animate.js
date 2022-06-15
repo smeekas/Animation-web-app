@@ -1,15 +1,17 @@
 import Canvas from "../Canvas/Canvas";
 import Controls from "../Controls/Controls";
 import FramesNControl from "../FramesNControl/FramesNControl";
+import Toolbar from "../Toolbar/Toolbar";
 import styles from "./Animate.module.css";
 function Animate() {
   return (
     <div className={styles.animate}>
-      <Controls />
+      <Toolbar />
       <div className={styles.core}>
+        <Controls />
         <Canvas />
-        <FramesNControl />
       </div>
+      <FramesNControl />
     </div>
   );
 }

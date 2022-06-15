@@ -18,3 +18,7 @@
   margin: 0.5rem;
   border: 1px solid salmon;
 } */
+
+.thisFrame {
+  border-bottom: 4px solid greenyellow;
+}

@@ -8,7 +8,11 @@ import { getCanvasGrid, getCanvasImage } from "../../utils/frame";
 function Canvas() {
   const canvasRef = useRef();
   const dispatch = useDispatch();
-  const currIndex = useSelector((state) => state.frames.currFrame);
+  const onion = useSelector((state) => state.onion.showScreen);
+  const frameObj = useSelector((state) => state.frames);
+  const prevImage = onion
+    ? frameObj.frames[frameObj.currFrame - 1].image
+    : null;
   const videoSrc = useSelector((state) => state.export.videoBlob);
   const allControl = useSelector((state) => state.canvas);
   useEffect(() => {
@@ -24,8 +28,19 @@ function Canvas() {
   }, [dispatch]);
   return (
     <div className={styles.canvasDiv}>
-      <div className={styles.canvas}>
+      <div
+        className={styles.canvas}
+        style={{
+          width: `${process.env.REACT_APP_CANVAS_DIAMENTION}px`,
+          height: `${process.env.REACT_APP_CANVAS_DIAMENTION}px`,
+        }}
+      >
+        {onion && (
+          <img className={styles.onionImage} src={prevImage} alt="onion" />
+        )}
         <canvas
+          style={onion ? { opacity: "0.5" } : {}}
+          onContextMenu={(e) => e.preventDefault()}
           onPointerMove={(e) => {
             if (e.buttons === 1) {
               if (allControl.line) {
@@ -58,10 +73,16 @@ function Canvas() {
                   e.target.offsetTop
                 );
               }
+            } else if (e.buttons == 2) {
+              grid.erase(e);
             }
           }}
           onMouseDown={(e) => {
             e.preventDefault();
+            if (e.buttons === 2) {
+              grid.erase(e);
+              return;
+            }
             if (allControl.line) {
               grid.initLine(
                 e.clientX,
@@ -98,6 +119,7 @@ function Canvas() {
             }
           }}
           onMouseUp={(e) => {
+            // console.log("up");
             if (allControl.line) {
               grid.finishLine(
                 e.clientX,
@@ -105,9 +127,7 @@ function Canvas() {
                 e.target.offsetLeft,
                 e.target.offsetTop
               );
-              return;
-            }
-            if (allControl.ellipse) {
+            } else if (allControl.ellipse) {
               grid.finishEllipse(
                 e.clientX,
                 e.clientY,
@@ -115,6 +135,13 @@ function Canvas() {
                 e.target.offsetTop
               );
             }
+            setTimeout(() => {
+              dispatch({
+                type: "PUSH_TO_HISTORY",
+                index: frameObj.currFrame,
+                grid: getCanvasGrid(),
+              });
+            }, 10);
           }}
           onMouseLeave={(e) => {
             if (e.buttons === 1) {
@@ -135,14 +162,14 @@ function Canvas() {
           }}
           ref={canvasRef}
         ></canvas>
-        <section className={styles.op}>
-          {videoSrc && (
-            <video controls>
-              <source src={videoSrc} type="videp/mp4" />
-            </video>
-          )}
-        </section>
       </div>
+      <section className={styles.op}>
+        {videoSrc && (
+          <video controls>
+            <source src={videoSrc} type="videp/mp4" />
+          </video>
+        )}
+      </section>
     </div>
   );
 }

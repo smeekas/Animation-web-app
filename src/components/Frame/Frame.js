@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./Frame.module.css";
+import tempImage from "../../assets/temp.png";
 import { getCanvasGrid, getCanvasImage } from "../../utils/frame";
 function Frame({ image, grid, index }) {
   // console.log(image);
@@ -24,11 +25,17 @@ function Frame({ image, grid, index }) {
       image: getCanvasImage(),
       newIndex: index,
     });
+    console.log(grid[0]);
     gridObj.addFrame(grid);
   };
   return (
-    <li className={styles.frame} onClick={frameClickHandler}>
-      <img src={image} alt={index} />
+    <li
+      className={`${styles.frame} ${
+        currIndex === index ? styles.thisFrame : ""
+      }`}
+      onClick={frameClickHandler}
+    >
+      <img src={image ? image : tempImage} alt={index} />
     </li>
   );
 }

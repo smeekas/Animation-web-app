@@ -1,45 +1,57 @@
 import { useDispatch, useSelector } from "react-redux";
 import Frame from "../Frame/Frame";
-import { getCanvasGrid, getCanvasImage } from "../../utils/frame";
+import { copyGrid, getCanvasGrid, getCanvasImage } from "../../utils/frame";
 import styles from "./FramesNControl.module.css";
+import { useEffect } from "react";
+import Button from "../Button/Button";
 function FramesNControl() {
   const allFrames = useSelector((state) => state.frames.frames);
-  // const canvasRef = useSelector((state) => state.canvas.canvasRef);
   const currIndex = useSelector((state) => state.frames.currFrame);
-  // const gridObj = useSelector((state) => state.canvas.grid);
+  const history = useSelector((state) =>
+    state.undo.history.slice(0, state.undo.history.length - 1)
+  );
+  const gridObj = useSelector((state) => state.canvas.grid);
   const dispatch = useDispatch();
-  // console.log(allFrames[0]?.grid[0]);
   const frameAddHandler = () => {
-    // const image = canvasRef
-    //   .toDataURL("image/png")
-    //   .replace("image/png", "image/octet-stream");
     const gridArr = getCanvasGrid();
     const image = getCanvasImage();
     console.log();
-    // const newGrid = [];
-    // for (let i = 0; i < gridArr.length; i++) {
-    //   newGrid.push([]);
-    //   for (let j = 0; j < gridArr[i].length; j++) {
-    //     newGrid[i].push(gridArr[i][j]);
-    //   }
-    // }
-    // console.l*-+og(newGrid[0]);
+    //TODO: add blank frame first, then change  as we click new frame
+    //TODO: handle test cases for clicking oldframe and exporting
+    //TODO: feature: download all images, undo, shift to circle, preview, preserve state,  right click to erase
     dispatch({
       type: "FRAME_ADD",
       payload: { image: image, grid: gridArr },
     });
+    gridObj.drawBlank();
   };
+  const copyPreviousFrame = () => {
+    // dispatch({ type: "COPY_PREV_FRAME" });
 
-  // console.log(currIndex, allFrames.length - 1);
+    // console.log(allFrames[currIndex - 1].grid[0]);
+    gridObj.copyFrame(copyGrid(allFrames[currIndex - 1].grid));
+  };
+  const onionSkin = () => {
+    dispatch({ type: "TOGGLE" });
+  };
+  const undoHandler = () => {
+    gridObj.drawFrame(history.pop());
+  };
   return (
     <div className={styles.frames}>
-      <button
+      <Button
         disabled={currIndex !== allFrames.length - 1}
         onClick={frameAddHandler}
       >
-        Add frame
-      </button>
-
+        Add Frame
+      </Button>
+      <Button disabled={currIndex === 0} onClick={copyPreviousFrame}>
+        Copy previous Frame
+      </Button>
+      <Button disabled={currIndex === 0} onClick={onionSkin}>
+        onion skin
+      </Button>
+      <Button onClick={undoHandler}>undo</Button>
       <ul className={styles.allFrames}>
         {allFrames.map((frame, index) => {
           return (

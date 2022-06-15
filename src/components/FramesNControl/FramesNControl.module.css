@@ -1,21 +1,21 @@
 .frames {
-  background-color: #27496D;
+  background-color: #27496d;
   height: 250px;
   position: relative;
 }
 .allFrames {
   max-width: 80%;
   list-style: none;
-  margin:0;
+  margin: 0;
   border: 1px solid skyblue;
   display: flex;
   justify-content: flex-start;
   /* flex-wrap: wrap; */
   /* overflow-x: scroll;
   position: absolute; */
-  overflow-x: scroll;
+  overflow-x: auto;
   overflow-y: hidden;
 }
-/* .childAllFrames {
+/* .childAllFrames {s
   display: flex;
 } */
