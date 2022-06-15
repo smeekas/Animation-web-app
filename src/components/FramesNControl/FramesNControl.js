@@ -7,9 +7,7 @@ import Button from "../Button/Button";
 function FramesNControl() {
   const allFrames = useSelector((state) => state.frames.frames);
   const currIndex = useSelector((state) => state.frames.currFrame);
-  const history = useSelector((state) =>
-    state.undo.history.slice(0, state.undo.history.length - 1)
-  );
+  const historyObj = useSelector((state) => state.undo);
   const gridObj = useSelector((state) => state.canvas.grid);
   const dispatch = useDispatch();
   const frameAddHandler = () => {
@@ -29,13 +27,18 @@ function FramesNControl() {
     // dispatch({ type: "COPY_PREV_FRAME" });
 
     // console.log(allFrames[currIndex - 1].grid[0]);
+
     gridObj.copyFrame(copyGrid(allFrames[currIndex - 1].grid));
   };
   const onionSkin = () => {
     dispatch({ type: "TOGGLE" });
   };
   const undoHandler = () => {
-    gridObj.drawFrame(history.pop());
+    const historyIndex = historyObj.history[currIndex].curr;
+    // console.log(historyIndex);
+    // console.log(historyObj.history[currIndex].grid[historyIndex]);
+    gridObj.drawFrame(historyObj.history[currIndex].grid[historyIndex]);
+    dispatch({ type: "UNDO_POP", index: currIndex });
   };
   return (
     <div className={styles.frames}>
