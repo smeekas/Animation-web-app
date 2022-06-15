@@ -7,9 +7,12 @@ function undoReducer(state = initialState, action) {
     const newHistory = [...state.history];
     console.log(newHistory);
     if (!newHistory[action.index]) {
-      newHistory[action.index] = [];
+      newHistory[action.index] = { curr: 0 };
     }
-    newHistory[action.index].push(action.grid);
+    newHistory[action.index] = {
+      ...newHistory[action.index],
+      grid: action.grid,
+    };
     return { ...state, history: newHistory };
   }
   return state;

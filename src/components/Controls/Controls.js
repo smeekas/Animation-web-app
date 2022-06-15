@@ -8,7 +8,7 @@ import ellipse from "../../assets/ellipse.png";
 import colorWheel from "../../assets/colorWheel.png";
 import { startRecord } from "../../utils/export";
 import styles from "./Controls.module.css";
-import Control from "../../Control/Control";
+import Control from "../Control/Control";
 import Button from "../Button/Button";
 function Controls() {
   const dispatch = useDispatch();
@@ -55,7 +55,7 @@ function Controls() {
         />
 
         <Control
-          tooltipName="free hand"
+          tooltipName="Free Hand"
           imgSrc={pencil}
           imgAlt="pencil"
           onClick={() => pencilRef.current.click()}
@@ -113,7 +113,7 @@ function Controls() {
           className={styles.preview}
         ></section>
       </div>
-      <section className={styles.allButtons}>
+      {/* <section className={styles.allButtons}>
         <Button
           className={styles.button}
           onClick={() => {
@@ -145,7 +145,7 @@ function Controls() {
         >
           export
         </Button>
-      </section>
+      </section> */}
     </div>
   );
 }
