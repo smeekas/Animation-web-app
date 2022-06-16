@@ -1,11 +1,15 @@
-import Tool from "../Tool/Tool";
+import Button from "../Button/Button";
 import styles from "./Toolbar.module.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { startRecord } from "../../utils/export";
 
 function Toolbar() {
   const allFrames = useSelector((state) => state.frames.frames);
   const canvasRef = useSelector((state) => state.canvas.canvasRef);
+  const dispatch = useDispatch();
+  const currIndex = useSelector((state) => state.frames.currFrame);
+  const historyObj = useSelector((state) => state.undo);
+  const gridObj = useSelector((state) => state.canvas.grid);
   const downloadAllFrames = () => {
     const anchor = document.createElement("a");
     let i = 0;
@@ -32,14 +36,56 @@ function Toolbar() {
   const exportHandler = () => {
     startRecord();
   };
+  const undoHandler = () => {
+    const historyIndex = historyObj.history[currIndex].curr;
+    // console.log(historyIndex);
+    // console.log(historyObj.history[currIndex].grid[historyIndex]);
+    gridObj.addFrame(historyObj.history[currIndex].grid[historyIndex]);
+    dispatch({ type: "UNDO_POP", index: currIndex });
+  };
+  const redoHandler = () => {
+    const historyIndex = historyObj.history[currIndex].curr;
+    console.log(historyIndex, historyObj.history[currIndex].grid.length);
+    // console.log(historyIndex);
+    // console.log(historyObj.history[currIndex].grid[historyIndex]);
+    gridObj.addFrame(historyObj.history[currIndex].grid[historyIndex + 2]);
+    dispatch({ type: "REDO_PUSH", index: currIndex });
+  };
+
   return (
     <div className={styles.toolbar}>
-      <Tool onClick={downloadAllFrames}>Download All Frames</Tool>
-      <Tool onClick={downloadThisFrame}>Download This Frame</Tool>
+      <Button className={styles.tool} onClick={downloadAllFrames}>
+        Download All Frames
+      </Button>
+      <Button className={styles.tool} onClick={downloadThisFrame}>
+        Download This Frame
+      </Button>
 
-      <Tool onClick={exportHandler}>export</Tool>
-      <Tool>undo</Tool>
-      <Tool>redo</Tool>
+      <Button className={styles.tool} onClick={exportHandler}>
+        export
+      </Button>
+      <Button
+        className={styles.tool}
+        disabled={
+          historyObj.history[currIndex]
+            ? !historyObj.history[currIndex].canUndo
+            : true
+        }
+        onClick={undoHandler}
+      >
+        undo
+      </Button>
+      <Button
+        className={styles.tool}
+        disabled={
+          historyObj.history[currIndex]
+            ? !historyObj.history[currIndex].canRedo
+            : true
+        }
+        onClick={redoHandler}
+      >
+        redo
+      </Button>
     </div>
   );
 }

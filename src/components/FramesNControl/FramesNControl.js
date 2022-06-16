@@ -2,12 +2,11 @@ import { useDispatch, useSelector } from "react-redux";
 import Frame from "../Frame/Frame";
 import { copyGrid, getCanvasGrid, getCanvasImage } from "../../utils/frame";
 import styles from "./FramesNControl.module.css";
-import { useEffect } from "react";
 import Button from "../Button/Button";
 function FramesNControl() {
   const allFrames = useSelector((state) => state.frames.frames);
   const currIndex = useSelector((state) => state.frames.currFrame);
-  const historyObj = useSelector((state) => state.undo);
+  // const historyObj = useSelector((state) => state.undo);
   const gridObj = useSelector((state) => state.canvas.grid);
   const dispatch = useDispatch();
   const frameAddHandler = () => {
@@ -33,13 +32,8 @@ function FramesNControl() {
   const onionSkin = () => {
     dispatch({ type: "TOGGLE" });
   };
-  const undoHandler = () => {
-    const historyIndex = historyObj.history[currIndex].curr;
-    // console.log(historyIndex);
-    // console.log(historyObj.history[currIndex].grid[historyIndex]);
-    gridObj.drawFrame(historyObj.history[currIndex].grid[historyIndex]);
-    dispatch({ type: "UNDO_POP", index: currIndex });
-  };
+
+  // console.log(historyObj.history[currIndex]);
   return (
     <div className={styles.frames}>
       <Button
@@ -54,7 +48,7 @@ function FramesNControl() {
       <Button disabled={currIndex === 0} onClick={onionSkin}>
         onion skin
       </Button>
-      <Button onClick={undoHandler}>undo</Button>
+      
       <ul className={styles.allFrames}>
         {allFrames.map((frame, index) => {
           return (

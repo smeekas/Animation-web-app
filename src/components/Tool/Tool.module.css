@@ -10,3 +10,8 @@
     color: white;
     border-radius: 8px;
 }
+.tool:disabled:hover{
+    background-color: #00336a ;
+    /* color: white;
+    border-radius: 8px; */
+}
