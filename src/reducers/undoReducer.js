@@ -14,6 +14,31 @@ function undoReducer(state = initialState, action) {
         canRedo: false,
       };
     }
+
+    if (
+      newHistory[action.index].curr <
+      newHistory[action.index].grid.length - 2
+    ) {
+      console.log("YUP", newHistory[action.index].curr);
+      // newHistory[action.index].grid[newHistory[action.index].curr + 2] =
+      //   action.grid;
+
+      newHistory[action.index].grid = newHistory[action.index].grid.slice(
+        0,
+        //TODO: TEST this
+        newHistory[action.index].curr + 2
+      );
+      newHistory[action.index].grid.push(action.grid);
+      newHistory[action.index].curr += 1;
+      newHistory[action.index].canUndo = newHistory[action.index].curr >= 0;
+      newHistory[action.index].canRedo =
+        newHistory[action.index].curr <
+        newHistory[action.index].grid.length - 2;
+      return {
+        ...state,
+        history: newHistory,
+      };
+    }
     newHistory[action.index].grid.push(action.grid);
     newHistory[action.index].curr += 1;
     newHistory[action.index].canUndo = newHistory[action.index].curr >= 0;
@@ -58,6 +83,5 @@ function undoReducer(state = initialState, action) {
   return state;
 }
 export default undoReducer;
-//TODO: undo last history remove error,
-//TODO: redo testing
-//TODO: migrate functionality to Toolbar
+
+//TODO: draw undo again draw then redo==> wrong behaviour
