@@ -7,10 +7,10 @@ let img;
 // const eraser = storeData.eraser;
 const refData = store.getState().canvas.canvasRef;
 // const CANVASH = refData?.height || 500;
-const CANVASH = Number(process.env.REACT_APP_CANVAS_DIAMENTION);
+const CANVASH = 500;
 
 // const CANVASW = refData?.width || 500;
-const CANVASW = Number(process.env.REACT_APP_CANVAS_DIAMENTION);
+const CANVASW = 500;
 class Grid {
   constructor(rows, columns) {
     this.rows = rows;
@@ -519,9 +519,6 @@ class Grid {
     return this.grid;
   }
 }
-const grid = new Grid(
-  Number(process.env.REACT_APP_ROWS_COLUMNS),
-  Number(process.env.REACT_APP_ROWS_COLUMNS)
-);
+const grid = new Grid(40, 40);
 store.dispatch({ type: "GRID", grid: grid });
 export default grid;

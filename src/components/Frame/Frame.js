@@ -10,6 +10,9 @@ function Frame({ image, grid, index }) {
 
   const dispatch = useDispatch();
   const frameClickHandler = () => {
+    if (index === 0) {
+      dispatch({ type: "DISABLE_ONION_SCREEN" });
+    }
     // console.log(currIndex, index);
     // dispatch({
     //   type: "FRAME_UPDATE",
@@ -36,6 +39,7 @@ function Frame({ image, grid, index }) {
       onClick={frameClickHandler}
     >
       <img src={image ? image : tempImage} alt={index} />
+      <p className={styles.index}>{index}</p>
     </li>
   );
 }

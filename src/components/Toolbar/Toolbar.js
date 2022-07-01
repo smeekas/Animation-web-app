@@ -2,8 +2,10 @@ import Button from "../Button/Button";
 import styles from "./Toolbar.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { startRecord } from "../../utils/export";
-
+import Modal from "../Modal/Modal";
+import { useState } from "react";
 function Toolbar() {
+  const [showModal, setShowModal] = useState(false);
   const allFrames = useSelector((state) => state.frames.frames);
   const canvasRef = useSelector((state) => state.canvas.canvasRef);
   const dispatch = useDispatch();
@@ -34,7 +36,8 @@ function Toolbar() {
     anchor.click();
   };
   const exportHandler = () => {
-    startRecord();
+    setShowModal(true);
+    // startRecord();
   };
   const undoHandler = () => {
     const historyIndex = historyObj.history[currIndex].curr;
@@ -54,6 +57,7 @@ function Toolbar() {
 
   return (
     <div className={styles.toolbar}>
+      {showModal && <Modal />}
       <Button className={styles.tool} onClick={downloadAllFrames}>
         Download All Frames
       </Button>

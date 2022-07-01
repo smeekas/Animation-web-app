@@ -1,8 +1,6 @@
 .controls {
   background-color: #0c7b93;
   width: 130px;
-  /* height: 70%; */
-  border-bottom-right-radius: 16px;
 }
 .colorPicker {
   position: relative;

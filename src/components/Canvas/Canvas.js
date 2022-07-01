@@ -5,14 +5,26 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from "./Canvas.module.css";
 import grid from "../../utils/canvas";
 import { getCanvasGrid, getCanvasImage } from "../../utils/frame";
+import temp from "../../assets/temp.png";
 function Canvas() {
   const canvasRef = useRef();
   const dispatch = useDispatch();
   const onion = useSelector((state) => state.onion.showScreen);
   const frameObj = useSelector((state) => state.frames);
-  const prevImage = onion
-    ? frameObj.frames[frameObj.currFrame - 1].image
-    : null;
+  const export_hide = useSelector((state) => state.export.hide);
+  // const prevImage = onion
+  //   ? frameObj.frames[frameObj.currFrame - 1].image
+  //   : null;
+  let imageOverCanvas = null,
+    imageClassName;
+  if (onion && frameObj.currFrame !== 0) {
+    imageOverCanvas = frameObj.frames[frameObj.currFrame - 1].image;
+    imageClassName = styles.onionImage;
+  }
+  if (export_hide) {
+    imageOverCanvas = temp;
+    imageClassName = styles.exportImage;
+  }
   const videoSrc = useSelector((state) => state.export.videoBlob);
   const allControl = useSelector((state) => state.canvas);
   useEffect(() => {
@@ -20,8 +32,8 @@ function Canvas() {
       type: "CANVAS_INIT",
       canvasRef: canvasRef.current,
     });
-    canvasRef.current.width = Number(process.env.REACT_APP_CANVAS_DIAMENTION);
-    canvasRef.current.height = Number(process.env.REACT_APP_CANVAS_DIAMENTION);
+    canvasRef.current.width = 500;
+    canvasRef.current.height = 500;
     if (!grid.c) {
       grid.addCanvas(canvasRef.current.getContext("2d"));
     }
@@ -31,13 +43,16 @@ function Canvas() {
       <div
         className={styles.canvas}
         style={{
-          width: `${process.env.REACT_APP_CANVAS_DIAMENTION}px`,
-          height: `${process.env.REACT_APP_CANVAS_DIAMENTION}px`,
+          width: `500px`,
+          height: `500px`,
         }}
       >
-        {onion && (
-          <img className={styles.onionImage} src={prevImage} alt="onion" />
+        {(onion || export_hide) && (
+          <img className={imageClassName} src={imageOverCanvas} alt="onion" />
         )}
+        {/* {onion && (
+          <img className={styles.onionImage} src={prevImage} alt="onion" />
+        )} */}
         <canvas
           style={onion ? { opacity: "0.5" } : {}}
           onContextMenu={(e) => e.preventDefault()}

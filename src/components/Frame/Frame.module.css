@@ -3,11 +3,17 @@
   height: 80px; */
   /* width: 100%; */
   /* display: inline; */
-  margin: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  margin: 0.5rem 1rem;
+  position: relative;
 }
 .frame img {
-  width: 80px;
-  height: 80px;
+  max-width: 80px;
+  max-height: 80px;
+  padding-bottom: 4px;
+  flex: 1;
+  cursor: pointer;
   /* margin: auto 5px; */
 }
 /* 
@@ -19,6 +25,15 @@
   border: 1px solid salmon;
 } */
 
-.thisFrame {
+.thisFrame img {
   border-bottom: 4px solid greenyellow;
+}
+
+.index {
+  color: black;
+  position: absolute;
+  background-color: white;
+  margin: 0;
+  padding: 4px;
+  border-radius: 4px;
 }

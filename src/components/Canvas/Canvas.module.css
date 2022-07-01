@@ -5,6 +5,10 @@
 }
 .canvasDiv {
   flex: 1;
+  display: flex;
+  margin-top: 4rem;
+  justify-content: center;
+  /* align-items: center; */
   background-color: #142850;
 }
 canvas {
@@ -21,7 +25,7 @@ canvas {
 }
 
 .op {
-  border: 1px solid skyblue;
+  /* border: 1px solid skyblue; */
 }
 .onionImage {
   position: absolute;
