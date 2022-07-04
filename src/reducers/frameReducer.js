@@ -28,9 +28,15 @@ export const frameReducer = (state = initialState, action) => {
         image: action.payload.image,
       };
       const newCurrFrame = state.currFrame + 1;
-      newFrames.push({ grid: tempGrid });
+      newFrames.splice(state.currFrame + 1, 0, {
+        grid: tempGrid,
+      });
+      // newFrames.push({ grid: tempGrid });
       // return { frames: [...newFrames], currFrame: newFrames.length - 1 };
-      return { frames: [...newFrames], currFrame: newFrames.length - 1 };
+      return {
+        frames: [...newFrames],
+        currFrame: action.payload.currIndex + 1,
+      };
     }
     // case "FRAME_UPDATE": {
     //   const newArr = [...state.frames];
@@ -52,14 +58,17 @@ export const frameReducer = (state = initialState, action) => {
       };
       // return state;
     }
-    case "COPY_PREV_FRAME": {
-      // if (state.currFrame !== 0) {
-      //   const newArr = [...state.frames];
-      //   // console.log(newArr[state.currFrame-1]);
-      //   newArr[state.currFrame] = { ...newArr[state.currFrame - 1] };
-      //   return { frames: newArr, ...state };
-      // }
-      // return state;
+    case "DELETE_FRAME": {
+      if (state.currFrame === 0) {
+        const newFrames = [...state.frames];
+        newFrames.splice(0, 1);
+        return { frames: newFrames, currFrame: 0 };
+      } else {
+        const newFrames = [...state.frames];
+
+        newFrames.splice(state.currFrame, 1);
+        return { frames: newFrames, currFrame: state.currFrame - 1 };
+      }
     }
     default:
       return state;
