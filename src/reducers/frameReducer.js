@@ -70,6 +70,30 @@ export const frameReducer = (state = initialState, action) => {
         return { frames: newFrames, currFrame: state.currFrame - 1 };
       }
     }
+    case "MOVE_FRAME_LEFT": {
+      if (state.currFrame === 0) {
+        return;
+      }
+      const newFrames = [...state.frames];
+      newFrames.splice(
+        state.currFrame - 1,
+        0,
+        newFrames.splice(state.currFrame, 1)[0]
+      );
+      return { frames: newFrames, currFrame: state.currFrame - 1 };
+    }
+    case "MOVE_FRAME_RIGHT": {
+      if (state.currFrame === state.frames.length - 1) {
+        return;
+      }
+      const newFrames = [...state.frames];
+      newFrames.splice(
+        state.currFrame + 1,
+        0,
+        newFrames.splice(state.currFrame, 1)[0]
+      );
+      return { frames: newFrames, currFrame: state.currFrame + 1 };
+    }
     default:
       return state;
   }

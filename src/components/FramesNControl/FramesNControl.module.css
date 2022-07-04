@@ -48,18 +48,33 @@
 .frameControlButton:hover {
   background-color: #0099ff;
 }
+.frameControlButton:disabled:hover {
+  background-color: #27496d;
+}
 .icon {
   font-weight: bolder;
   font-size: 1rem;
   padding-right: 0.5rem;
 }
-.controlFrame{
+.controlFrame {
   background-color: #005a96;
   display: flex;
   align-items: center;
-  padding: 0.55rem;
+  border: 1px solid green;
+  padding: 0.3rem;
 }
-.controlFrame p{
-  padding: 0 1rem;
-margin: 0;
+
+.controlFrame .controlFrameIcon {
+  font-size: 1.3rem;
+  /* border: 1px solid red; */
+  display: flex;
+  justify-content: center;
+  padding: 0.3rem;
+  margin: 0 0.2rem;
+  color: white;
+  align-items: center;
+}
+.controlFrameIcon:hover {
+  border-radius: 4px;
+  background-color: gray;
 }

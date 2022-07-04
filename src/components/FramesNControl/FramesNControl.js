@@ -11,6 +11,8 @@ import {
   FiPlus,
   FiCopy,
   FiTrash2,
+  FiArrowLeft,
+  FiArrowRight,
 } from "react-icons/fi";
 function FramesNControl() {
   const [showFrames, setShowFrames] = useState(true);
@@ -50,6 +52,15 @@ function FramesNControl() {
       gridObj.addFrame(allFrames[currIndex - 1].grid);
       dispatch({ type: "DELETE_FRAME" });
     }
+  };
+  const moveFrameLeftHandler = () => {
+    if (currIndex === 1) {
+      dispatch({ type: "DISABLE_ONION_SCREEN" });
+    }
+    dispatch({ type: "MOVE_FRAME_LEFT" });
+  };
+  const moveFrameRightHandler = () => {
+    dispatch({ type: "MOVE_FRAME_RIGHT" });
   };
   const copyPreviousFrame = () => {
     // dispatch({ type: "COPY_PREV_FRAME" });
@@ -112,8 +123,16 @@ function FramesNControl() {
         // TODO: controls remove frame  and may be move frame
       }
       <div className={styles.controlFrame}>
-        <p>controls</p>
-        <FiTrash2 onClick={removeFramehandler} />
+        <section>Controls</section>
+        <section className={styles.controlFrameIcon}>
+          <FiTrash2 onClick={removeFramehandler} />
+        </section>
+        <section className={styles.controlFrameIcon}>
+          <FiArrowLeft onClick={moveFrameLeftHandler} />
+        </section>
+        <section className={styles.controlFrameIcon}>
+          <FiArrowRight onClick={moveFrameRightHandler} />
+        </section>
       </div>
       <motion.ul
         onAnimationEnd={() => setFrameDisplay(false)}
