@@ -7,6 +7,7 @@
   flex-direction: column;
   margin: 0.5rem 1rem;
   position: relative;
+  box-sizing: border-box;
 }
 .frame img {
   max-width: 80px;
@@ -26,9 +27,12 @@
 } */
 
 .thisFrame img {
-  border-bottom: 4px solid greenyellow;
+  /* border-bottom: 3px solid #be2c00; */
+  /* border-radius: 4px; */
 }
-
+.thisFrame {
+  border-bottom: 4px solid rgb(0, 255, 0);
+}
 .index {
   color: black;
   position: absolute;

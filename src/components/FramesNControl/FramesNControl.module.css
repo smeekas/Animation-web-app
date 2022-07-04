@@ -9,12 +9,13 @@
   max-width: 100%;
   list-style: none;
   margin: 0;
-  height: 126px;
+  height: 134px;
+  padding-top: 8px;
   /* border: 1px solid skyblue; */
   display: flex;
   background-color: #00356f;
   justify-content: flex-start;
-  align-items: center;
+  align-items: baseline;
   /* flex-wrap: wrap; */
   /* overflow-x: scroll;
   position: absolute; */
@@ -43,6 +44,9 @@
   /* vertical-align: middle; */
   font-size: 1rem;
   outline: none;
+}
+.frameControlButton:hover {
+  background-color: #0099ff;
 }
 .icon {
   font-weight: bold;

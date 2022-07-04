@@ -5,12 +5,14 @@ import styles from "./FramesNControl.module.css";
 import Button from "../Button/Button";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { FiSquare, FiCheckSquare } from "react-icons/fi";
 function FramesNControl() {
   const [showFrames, setShowFrames] = useState(true);
   const [frameDisplay, setFrameDisplay] = useState(true);
   const allFrames = useSelector((state) => state.frames.frames);
   const currIndex = useSelector((state) => state.frames.currFrame);
   // const historyObj = useSelector((state) => state.undo);
+  const showScreen = useSelector((state) => state.onion.showScreen);
   const gridObj = useSelector((state) => state.canvas.grid);
   const dispatch = useDispatch();
   const frameAddHandler = () => {
@@ -52,7 +54,7 @@ function FramesNControl() {
             setShowFrames((prev) => !prev);
           }}
         >
-          Frames
+          Frames({currIndex + 1}/{allFrames.length})
         </Button>
         <Button
           className={styles.frameControlButton}
@@ -73,7 +75,7 @@ function FramesNControl() {
           disabled={currIndex === 0}
           onClick={onionSkin}
         >
-          onion skin
+          {!showScreen ? <FiSquare /> : <FiCheckSquare />}onion skin
         </Button>
       </div>
       <motion.ul
@@ -81,7 +83,7 @@ function FramesNControl() {
         animate={
           showFrames
             ? {
-                height: ["0px", "126px"],
+                height: ["0px", "134px"],
               }
             : {}
         }

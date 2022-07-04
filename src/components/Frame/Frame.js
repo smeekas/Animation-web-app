@@ -39,7 +39,7 @@ function Frame({ image, grid, index }) {
       onClick={frameClickHandler}
     >
       <img src={image ? image : tempImage} alt={index} />
-      <p className={styles.index}>{index}</p>
+      <p className={styles.index}>{index+1}</p>
     </li>
   );
 }
