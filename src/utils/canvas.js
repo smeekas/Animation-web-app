@@ -1,3 +1,4 @@
+import { findRenderedDOMComponentWithClass } from "react-dom/test-utils";
 import store from "../store";
 const storeData = store.getState();
 // const color = storeData.color;
@@ -35,15 +36,16 @@ class Grid {
 
   //!LINE
   initLine(cX, cY, left, top) {
-    [this.lineX, this.lineY] = this.getPixel(cX, cY, left, top);
-    // console.log("DOWN");
+    [this.lineY, this.lineX] = this.getPixel(cX, cY, left, top);
+    // console.log(this.lineX, this.lineY);
   }
   drawLine(cX, cY, left, top) {
-    let [endX, endY] = this.getPixel(cX, cY, left, top);
+    let [endY, endX] = this.getPixel(cX, cY, left, top);
+    // console.log(endX, endY);
     this.lineAlgorithm(this.lineX, this.lineY, endX, endY);
   }
   finishLine(cX, cY, left, top) {
-    let [endX, endY] = this.getPixel(cX, cY, left, top);
+    let [endY, endX] = this.getPixel(cX, cY, left, top);
     this.lineAlgorithm(this.lineX, this.lineY, endX, endY);
     this.lineX = null;
     this.lineY = null;
@@ -267,7 +269,7 @@ class Grid {
   //!ELLIPSE
   initEllipse(cX, cY, left, top) {
     [this.ellipseX, this.ellipseY] = this.getPixel(cX, cY, left, top);
-    // console.log(this.circleX, this.circleY);
+    console.log(this.ellipseX, this.ellipseY);
   }
 
   getWidthHeightAndCenter(endX, endY) {
@@ -281,10 +283,13 @@ class Grid {
 
   drawEllipse(cX, cY, left, top) {
     let [endX, endY] = this.getPixel(cX, cY, left, top);
+    // console.log(this.getWidthHeightAndCenter(endX, endY));
     this.ellipseAlgorithm(...this.getWidthHeightAndCenter(endX, endY));
   }
 
-  ellipseAlgorithm(rx, ry, xc, yc) {
+  ellipseAlgorithm(ry, rx, yc, xc) {
+    //!I have no idea why alternating coordinates works😐😶
+
     let pixelArr = [];
     var dx, dy, d1, d2, x, y;
     x = 0;
@@ -346,6 +351,7 @@ class Grid {
         d2 = d2 + dx - dy + rx * rx;
       }
     }
+    // console.log(pixelArr);
     this.colorCircleGrid(pixelArr);
   }
   finishEllipse(cX, cY, left, top) {
@@ -370,7 +376,8 @@ class Grid {
     const clientY = cY - top;
     let r = Math.floor(clientY / this.cellW);
     let c = Math.floor(clientX / this.cellH);
-    return [r, c];
+    // return [r, c];
+    return [c, r];
   }
   addCanvas(c) {
     this.c = c;
@@ -433,7 +440,12 @@ class Grid {
     // return `rgb(${Math.random() * 255},${Math.random() * 255},${
     //   Math.random() * 255
     // }) `;
-    return store.getState().canvas.color;
+    // return this.newColor
+    return store.getState().canvas.color.current;
+  }
+  setColor(color) {
+    console.log(color);
+    this.newColor = color;
   }
   // getPosition(e) {
   //   // console.log("pos");
@@ -483,6 +495,71 @@ class Grid {
     this.grid[r][c] = "#ffffff";
     this.drawGrid();
   }
+  //TODO NOT WORKING move grid functionality
+  initMoveGrid(cX, cY, left, top) {
+    [this.moveX, this.moveY] = this.getPixel(cX, cY, left, top);
+    this.newMoveArr = [];
+    // console.log(this.moveX,this.moveY);
+  }
+  moveGrid(cX, cY, left, top) {
+    const [endX, endY] = this.getPixel(cX, cY, left, top);
+    this.newMoveArr = [];
+    // console.log(endX, endY);
+    for (let i = 0; i < this.rows; i++) {
+      this.newMoveArr.push(new Array(this.columns).fill("#ffffff"));
+    }
+
+    //! X start
+    if (this.moveX > endX) {
+      const diffX = this.moveX - endX;
+      // console.log(diffX);
+      for (let k = 0; k < this.rows; k++) {
+        let j = 0;
+        let l;
+        for (l = diffX; l < this.columns; l++) {
+          this.newMoveArr[k][j++] = this.grid[k][l];
+        }
+      }
+      console.log(this.newMoveArr);
+    } else {
+      const diffX = endX - this.moveX;
+      for (let k = 0; k < this.rows; k++) {
+        let j = 0;
+        for (let l = diffX; l < this.columns; l++) {
+          this.newMoveArr[k][l] = this.grid[k][j++];
+        }
+      }
+      console.log(this.newMoveArr);
+    }
+    //! X ends
+    //! y starts
+    if (this.moveY > endY) {
+      // console.log("here");
+      // console.log(this.moveY, " ", endY);
+      // return;
+      const diffY = this.moveY - endY;
+      let j = 0;
+      // console.log(diffY);
+      for (let i = diffY; i < this.rows; i++) {
+        this.newMoveArr[j] = this.newMoveArr[i];
+        j++;
+      }
+      // console.log(this.newMoveArr);s
+    } else if (this.moveY < endY) {
+      const diffY = endY - this.moveY;
+      let j = 0;
+      for (let i = diffY; i < this.rows; i++) {
+        this.newMoveArr[i] = this.newMoveArr[j++];
+      }
+    }
+    //! y ends
+    this.drawFrame(this.newMoveArr);
+  }
+  finishMoveGrid(cX, cY, left, top) {
+    const [endX, endY] = this.getPixel(cX, cY, left, top);
+    this.addFrame(this.newMoveArr);
+  }
+  //TODO NOT WORKING
   floodfill(e) {
     const clientX = e.clientX - e.target.offsetLeft;
     const clientY = e.clientY - e.target.offsetTop;
@@ -512,9 +589,9 @@ class Grid {
     }
     return;
   }
-  setColor(e) {
-    this.color = e.target.value;
-  }
+  // setColor(e) {
+  //   this.color = e.target.value;
+  // }
   getGrid() {
     return this.grid;
   }

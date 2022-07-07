@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useState } from "react";
+// import { useState } from "react";
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./Canvas.module.css";
@@ -12,6 +12,7 @@ function Canvas() {
   const onion = useSelector((state) => state.onion.showScreen);
   const frameObj = useSelector((state) => state.frames);
   const export_hide = useSelector((state) => state.export.hide);
+  // const color = useSelector((state) => state.canvas.color);
   // const prevImage = onion
   //   ? frameObj.frames[frameObj.currFrame - 1].image
   //   : null;
@@ -57,7 +58,8 @@ function Canvas() {
           style={onion ? { opacity: "0.5" } : {}}
           onContextMenu={(e) => e.preventDefault()}
           onPointerMove={(e) => {
-            if (e.buttons === 1) {
+            //TODO set color
+            if (e.buttons === 1 || e.buttons === 2) {
               if (allControl.line) {
                 grid.drawLine(
                   e.clientX,
@@ -68,10 +70,6 @@ function Canvas() {
 
                 return;
               }
-              // if (allControl.eraser || allControl.pencil) {
-              //   grid.getPosition(e);
-              //   return;
-              // }
               if (allControl.pencil) {
                 grid.pencil(e);
                 return;
@@ -87,17 +85,26 @@ function Canvas() {
                   e.target.offsetLeft,
                   e.target.offsetTop
                 );
+                return;
               }
-            } else if (e.buttons == 2) {
-              grid.erase(e);
+              if (allControl.move) {
+                grid.moveGrid(
+                  e.clientX,
+                  e.clientY,
+                  e.target.offsetLeft,
+                  e.target.offsetTop
+                );
+              }
             }
           }}
           onMouseDown={(e) => {
             e.preventDefault();
-            if (e.buttons === 2) {
-              grid.erase(e);
-              return;
+            if (e.buttons === 1) {
+              dispatch({ type: "SET_CURR_COLOR_PRIMARY" });
+            } else {
+              dispatch({ type: "SET_CURR_COLOR_SECONDARY" });
             }
+
             if (allControl.line) {
               grid.initLine(
                 e.clientX,
@@ -108,10 +115,6 @@ function Canvas() {
 
               return;
             }
-            // if (allControl.eraser || allControl.pencil) {
-            //   grid.pencil(e);
-            //   return;
-            // }
             if (allControl.pencil) {
               grid.pencil(e);
               return;
@@ -131,10 +134,18 @@ function Canvas() {
                 e.target.offsetLeft,
                 e.target.offsetTop
               );
+              return;
+            }
+            if (allControl.move) {
+              grid.initMoveGrid(
+                e.clientX,
+                e.clientY,
+                e.target.offsetLeft,
+                e.target.offsetTop
+              );
             }
           }}
           onMouseUp={(e) => {
-            // console.log("up");
             if (allControl.line) {
               grid.finishLine(
                 e.clientX,
@@ -144,6 +155,13 @@ function Canvas() {
               );
             } else if (allControl.ellipse) {
               grid.finishEllipse(
+                e.clientX,
+                e.clientY,
+                e.target.offsetLeft,
+                e.target.offsetTop
+              );
+            } else if (allControl.move) {
+              grid.finishMoveGrid(
                 e.clientX,
                 e.clientY,
                 e.target.offsetLeft,
@@ -165,13 +183,7 @@ function Canvas() {
                 return;
               }
               if (allControl.ellipse) {
-                grid
-                  .cancelEllipse
-                  // e.clientX,
-                  // e.clientY,
-                  // e.target.offsetLeft,
-                  // e.target.offsetTop
-                  ();
+                grid.cancelEllipse();
               }
             }
           }}

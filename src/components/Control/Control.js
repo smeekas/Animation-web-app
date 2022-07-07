@@ -4,12 +4,16 @@ const Control = forwardRef(
   ({ tooltipName, imgSrc, imgAlt, onClick, checked, onChange, type }, ref) => {
     return (
       <section data-tooltip={tooltipName}>
-        <img
-          className={`${styles.drawControlImage} ${checked && styles.checked}`}
-          alt={imgAlt}
-          src={imgSrc}
-          onClick={onClick}
-        />
+        {imgSrc && (
+          <img
+            className={`${styles.drawControlImage} ${
+              checked && styles.checked
+            }`}
+            alt={imgAlt}
+            src={imgSrc}
+            onClick={onClick}
+          />
+        )}
 
         <input
           ref={ref}

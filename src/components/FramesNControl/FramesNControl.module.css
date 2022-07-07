@@ -56,6 +56,11 @@
   font-size: 1rem;
   padding-right: 0.5rem;
 }
+.frameAndControl {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
 .controlFrame {
   background-color: #005a96;
   display: flex;

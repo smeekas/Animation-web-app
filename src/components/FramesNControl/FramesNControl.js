@@ -19,7 +19,6 @@ function FramesNControl() {
   const [frameDisplay, setFrameDisplay] = useState(true);
   const allFrames = useSelector((state) => state.frames.frames);
   const currIndex = useSelector((state) => state.frames.currFrame);
-  console.log(currIndex);
   // const historyObj = useSelector((state) => state.undo);
   const showScreen = useSelector((state) => state.onion.showScreen);
   const gridObj = useSelector((state) => state.canvas.grid);
@@ -122,19 +121,7 @@ function FramesNControl() {
       {
         // TODO: controls remove frame  and may be move frame
       }
-      <div className={styles.controlFrame}>
-        <section>Controls</section>
-        <section className={styles.controlFrameIcon}>
-          <FiTrash2 onClick={removeFramehandler} />
-        </section>
-        <section className={styles.controlFrameIcon}>
-          <FiArrowLeft onClick={moveFrameLeftHandler} />
-        </section>
-        <section className={styles.controlFrameIcon}>
-          <FiArrowRight onClick={moveFrameRightHandler} />
-        </section>
-      </div>
-      <motion.ul
+      <div
         onAnimationEnd={() => setFrameDisplay(false)}
         animate={
           showFrames
@@ -145,19 +132,33 @@ function FramesNControl() {
         }
         style={{ display: frameDisplay ? "flex" : "none" }}
         transition={{ duration: 0.5 }}
-        className={styles.allFrames}
+        className={styles.frameAndControl}
       >
-        {allFrames.map((frame, index) => {
-          return (
-            <Frame
-              index={index}
-              key={index}
-              image={frame.image}
-              grid={frame.grid}
-            />
-          );
-        })}
-      </motion.ul>
+        <div className={styles.controlFrame}>
+          <section>Controls</section>
+          <section className={styles.controlFrameIcon}>
+            <FiTrash2 onClick={removeFramehandler} />
+          </section>
+          <section className={styles.controlFrameIcon}>
+            <FiArrowLeft onClick={moveFrameLeftHandler} />
+          </section>
+          <section className={styles.controlFrameIcon}>
+            <FiArrowRight onClick={moveFrameRightHandler} />
+          </section>
+        </div>
+        <motion.ul className={styles.allFrames}>
+          {allFrames.map((frame, index) => {
+            return (
+              <Frame
+                index={index}
+                key={index}
+                image={frame.image}
+                grid={frame.grid}
+              />
+            );
+          })}
+        </motion.ul>
+      </div>
     </div>
   );
 }

@@ -10,20 +10,26 @@ import { startRecord } from "../../utils/export";
 import styles from "./Controls.module.css";
 import Control from "../Control/Control";
 import Button from "../Button/Button";
+import { TbArrowsDiagonal2 } from "react-icons/tb";
+import { useState } from "react";
 function Controls() {
   const dispatch = useDispatch();
   const canvasRef = useSelector((state) => state.canvas.canvasRef);
   const grid = useSelector((state) => state.canvas.grid);
   const allFrames = useSelector((state) => state.frames.frames);
+  const color = useSelector((state) => state.canvas.color);
+  const [whichColor, setWhichColor] = useState(null);
   const floodfillRef = useRef();
   const eraserRef = useRef();
   const lineRef = useRef();
   const colorRef = useRef();
   const pencilRef = useRef();
   const ellipseRef = useRef();
+  const moveRef = useRef();
   const allControl = useSelector((state) => state.canvas);
   const colorHandler = (e) => {
-    dispatch({ type: "COLOR", value: e.target.value });
+    console.log(e.target.value);
+    dispatch({ type: "COLOR", colorVal: e.target.value, color: whichColor });
   };
   const floodfillHandler = (e) => {
     dispatch({ type: "FLOODFILL", value: e.target.checked });
@@ -40,6 +46,10 @@ function Controls() {
   const ellipseHandler = (e) => {
     dispatch({ type: "ELLIPSE", value: e.target.checked });
   };
+  const moveHandler = (e) => {
+    dispatch({ type: "MOVE", value: e.target.checked });
+  };
+  // console.log(color);
   return (
     <div className={styles.controls}>
       <div className={styles.drawControl}>
@@ -97,8 +107,17 @@ function Controls() {
           type="checkbox"
           ref={ellipseRef}
         />
-
         <Control
+          tooltipName="move"
+          imgSrc={paintBucket}
+          imgAlt="ellipse"
+          onClick={() => moveRef.current.click()}
+          onChange={(e) => moveHandler(e)}
+          checked={allControl.move}
+          type="checkbox"
+          ref={moveRef}
+        />
+        {/* <Control
           tooltipName="Color Picker"
           imgSrc={colorWheel}
           imgAlt="colorwheel"
@@ -107,11 +126,39 @@ function Controls() {
           checked={false}
           type="color"
           ref={colorRef}
-        />
+        /> */}
         <section
-          style={{ backgroundColor: allControl.color }}
-          className={styles.preview}
-        ></section>
+          // style={{ backgroundColor: allControl.color }}
+          className={styles.colorPicker}
+        >
+          <input
+            onChange={(e) => colorHandler(e)}
+            style={{ visibility: "hidden" }}
+            type="color"
+            ref={colorRef}
+          />
+          <div
+            style={{ backgroundColor: color.primary }}
+            className={`${styles.primary} ${styles.colorBox}`}
+            onClick={() => {
+              setWhichColor("primary");
+              colorRef.current.click();
+            }}
+          ></div>
+          <div
+            style={{ backgroundColor: color.secondary }}
+            className={`${styles.secondary} ${styles.colorBox}`}
+            onClick={() => {
+              setWhichColor("secondary");
+              colorRef.current.click();
+            }}
+          ></div>
+          <TbArrowsDiagonal2
+            onClick={() => dispatch({ type: "TOGGLE_COLOR" })}
+            className={styles.switchColor}
+          />
+        </section>
+        {/* <Button onClick={hori}>H</Button> */}
       </div>
       {/* <section className={styles.allButtons}>
         <Button
