@@ -38,6 +38,7 @@ class Grid {
   //!LINE
   initLine(cX, cY, left, top) {
     [this.lineY, this.lineX] = this.getPixel(cX, cY, left, top);
+    // this.prevColorOfLine2=[]
     // console.log(this.lineX, this.lineY);
   }
   drawLine(cX, cY, left, top) {
@@ -51,12 +52,13 @@ class Grid {
     this.lineX = null;
     this.lineY = null;
     this.prevColorOfLine = [];
+    this.prevColorOfLine2 = [];
 
     // console.log("UP");
   }
   lineAlgorithm(x1, y1, x2, y2) {
     let pixelarr = [];
-    let pixelarr2 = [];
+
     // Iterators, counters required by algorit
     let x, y, dx, dy, dx1, dy1, px, py, xe, ye, i; // Calculate line deltas
     dx = x2 - x1;
@@ -79,10 +81,7 @@ class Grid {
       }
       // this.grid[x][y] = "black";
       pixelarr.push({ x: x, y: y });
-      //!
-      if (y !== this.columns - 1 - y) {
-        pixelarr2.push({ x: x, y: this.columns - 1 - y });
-      }
+
       // this.drawGrid();
       //pixel(x, y); // Draw first pixel        // Rasterize the line
       for (i = 0; x < xe; i++) {
@@ -100,10 +99,7 @@ class Grid {
         // currently rasterized position
         // this.grid[x][y] = "black";
         pixelarr.push({ x: x, y: y });
-        //!
-        if (y !== this.columns - 1 - y) {
-          pixelarr2.push({ x: x, y: this.columns - 1 - y });
-        }
+
         // this.drawGrid();
         // pixel(x, y);
       }
@@ -121,10 +117,7 @@ class Grid {
       }
       // this.grid[x][y] = "black";
       pixelarr.push({ x: x, y: y });
-      //!
-      if (y !== this.columns - 1 - y) {
-        pixelarr2.push({ x: x, y: this.columns - 1 - y });
-      }
+
       // this.drawGrid();
       //  pixel(x, y); // Draw first pixel        // Rasterize the line
       for (i = 0; y < ye; i++) {
@@ -143,59 +136,63 @@ class Grid {
         // pixel(x, y);
         // this.grid[x][y] = "black";
         pixelarr.push({ x: x, y: y });
-        //!
-        if (y !== this.columns - 1 - y) {
-          pixelarr2.push({ x: x, y: this.columns - 1 - y });
-        }
+
         // this.drawGrid();
       }
     }
-    this.colorLineGrid(pixelarr, "black");
-    this.colorLineGrid(pixelarr2, "red");
+    this.colorLineGrid(pixelarr);
   }
   cancelLine() {
     this.prevColorOfLine.forEach((item) => {
       this.grid[item.x][item.y] = item.color;
     });
-
+    this.prevColorOfLine2.forEach((item) => {
+      this.grid[item.x][item.y] = item.color;
+    });
     this.drawGrid();
   }
-  colorLineGrid(arr, color) {
+  colorLineGrid(arr) {
     //color prev
-    if (color === "black") {
-      this.prevColorOfLine.forEach((item) => {
-        this.grid[item.x][item.y] = item.color;
-      });
-    } else {
-      this.prevColorOfLine2.forEach((item) => {
-        this.grid[item.x][item.y] = item.color;
-      });
-    }
 
+    this.prevColorOfLine.forEach((item) => {
+      this.grid[item.x][item.y] = item.color;
+    });
+    // //!
+    this.prevColorOfLine2.forEach((item) => {
+      this.grid[item.x][item.y] = item.color;
+    });
+    // //!
     //color new
     this.prevColorOfLine = [];
     this.prevColorOfLine2 = [];
-    if (color === "black") {
-      arr.forEach((item) => {
-        this.prevColorOfLine.push({
-          x: item.x,
-          y: item.y,
-          color: this.grid[item.x][item.y],
-        });
-        // this.grid[item.x][item.y] = this.getColor();
-        this.grid[item.x][item.y] = color;
+
+    arr.forEach((item) => {
+      this.prevColorOfLine.push({
+        x: item.x,
+        y: item.y,
+        color: this.grid[item.x][item.y],
       });
-    } else {
-      arr.forEach((item) => {
+      if (
+        !this.prevColorOfLine.some(
+          (points) =>
+            points.x === item.x && points.y === this.columns - 1 - item.y
+        )
+      ) {
         this.prevColorOfLine2.push({
           x: item.x,
-          y: item.y,
-          color: this.grid[item.x][item.y],
+          y: this.columns - 1 - item.y,
+          color: this.grid[item.x][this.columns - 1 - item.y],
         });
-        // this.grid[item.x][item.y] = this.getColor();
-        this.grid[item.x][item.y] = color;
-      });
-    }
+      }
+      // if (item.y === this.columns - 1 - item.y) {
+
+      this.grid[item.x][item.y] = this.getColor();
+      if (item.y !== this.columns - 1 - item.y) {
+        this.grid[item.x][this.columns - 1 - item.y] = "red";
+        // this.grid[this.rows-1-item.x][item.y] = "red";
+      }
+      // this.grid[item.x][item.y] = color;
+    });
 
     this.drawGrid();
     //add new to prev
@@ -543,10 +540,29 @@ class Grid {
     //   return;
     // }
     const mirrorC = this.columns - c - 1;
+    const mirrorR = this.rows - r - 1;
     this.grid[r][c] = this.getColor();
     //!MIRROR
-    this.grid[r][mirrorC] = this.getColor();
+    // this.grid[r][mirrorC] = this.getColor();
+    // this.grid[mirrorR][c] = this.getColor();
+    // this.grid[mirrorR][mirrorC] = this.getColor();
+    // this.mirrorV();
+    // this.mirrorH();
     this.drawGrid();
+  }
+  mirrorV() {
+    const half = this.rows / 2;
+    for (let i = 0; i < half; i++) {
+      this.grid[this.columns - 1 - i] = this.grid[i];
+    }
+  }
+  mirrorH() {
+    const half = this.rows / 2;
+    for (let i = 0; i < this.rows; i++) {
+      for (let j = 0; j < half; j++) {
+        this.grid[i][this.columns - 1 - j] = this.grid[i][j];
+      }
+    }
   }
   erase(e) {
     const clientX = e.clientX - e.target.offsetLeft;
