@@ -49,6 +49,10 @@ function Controls() {
   const moveHandler = (e) => {
     dispatch({ type: "MOVE", value: e.target.checked });
   };
+  const horizontalMirrorHandler=()=>{
+      //TODO
+   
+  }
   // console.log(color);
   return (
     <div className={styles.controls}>
@@ -158,7 +162,7 @@ function Controls() {
             className={styles.switchColor}
           />
         </section>
-        {/* <Button onClick={hori}>H</Button> */}
+        <Button onClick={horizontalMirrorHandler}>H</Button>
       </div>
       {/* <section className={styles.allButtons}>
         <Button

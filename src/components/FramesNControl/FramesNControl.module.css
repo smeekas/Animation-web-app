@@ -9,9 +9,11 @@
   max-width: 100%;
   list-style: none;
   margin: 0;
-  height: 134px;
+
   padding-top: 8px;
   /* border: 1px solid skyblue; */
+    /* height: 134px; */
+
   display: flex;
   background-color: #00356f;
   justify-content: flex-start;
@@ -25,6 +27,12 @@
 /* .childAllFrames {s
   display: flex;
 } */
+.frameAndControl {
+  display: flex;
+  /* height: 134px; */
+  flex-direction: column;
+  max-width: 100%;
+}
 .frameControlButtons {
   background-color: #27496d;
   display: flex;
@@ -55,11 +63,6 @@
   font-weight: bolder;
   font-size: 1rem;
   padding-right: 0.5rem;
-}
-.frameAndControl {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
 }
 .controlFrame {
   background-color: #005a96;

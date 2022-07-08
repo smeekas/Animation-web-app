@@ -121,17 +121,17 @@ function FramesNControl() {
       {
         // TODO: controls remove frame  and may be move frame
       }
-      <div
+      <motion.div
         onAnimationEnd={() => setFrameDisplay(false)}
         animate={
           showFrames
             ? {
-                height: ["0px", "134px"],
+                height: ["0px", "164px"],
               }
             : {}
         }
-        style={{ display: frameDisplay ? "flex" : "none" }}
         transition={{ duration: 0.5 }}
+        style={{ display: frameDisplay ? "flex" : "none" }}
         className={styles.frameAndControl}
       >
         <div className={styles.controlFrame}>
@@ -158,7 +158,7 @@ function FramesNControl() {
             );
           })}
         </motion.ul>
-      </div>
+      </motion.div>
     </div>
   );
 }

@@ -25,6 +25,7 @@ class Grid {
     this.fill = "blue";
     this.grid = [];
     this.prevColorOfLine = [];
+    this.prevColorOfLine2 = [];
     this.prevColorOfCircle = [];
     for (let i = 0; i < rows; i++) {
       this.grid.push([]);
@@ -55,6 +56,7 @@ class Grid {
   }
   lineAlgorithm(x1, y1, x2, y2) {
     let pixelarr = [];
+    let pixelarr2 = [];
     // Iterators, counters required by algorit
     let x, y, dx, dy, dx1, dy1, px, py, xe, ye, i; // Calculate line deltas
     dx = x2 - x1;
@@ -77,6 +79,10 @@ class Grid {
       }
       // this.grid[x][y] = "black";
       pixelarr.push({ x: x, y: y });
+      //!
+      if (y !== this.columns - 1 - y) {
+        pixelarr2.push({ x: x, y: this.columns - 1 - y });
+      }
       // this.drawGrid();
       //pixel(x, y); // Draw first pixel        // Rasterize the line
       for (i = 0; x < xe; i++) {
@@ -94,6 +100,10 @@ class Grid {
         // currently rasterized position
         // this.grid[x][y] = "black";
         pixelarr.push({ x: x, y: y });
+        //!
+        if (y !== this.columns - 1 - y) {
+          pixelarr2.push({ x: x, y: this.columns - 1 - y });
+        }
         // this.drawGrid();
         // pixel(x, y);
       }
@@ -111,6 +121,10 @@ class Grid {
       }
       // this.grid[x][y] = "black";
       pixelarr.push({ x: x, y: y });
+      //!
+      if (y !== this.columns - 1 - y) {
+        pixelarr2.push({ x: x, y: this.columns - 1 - y });
+      }
       // this.drawGrid();
       //  pixel(x, y); // Draw first pixel        // Rasterize the line
       for (i = 0; y < ye; i++) {
@@ -129,10 +143,15 @@ class Grid {
         // pixel(x, y);
         // this.grid[x][y] = "black";
         pixelarr.push({ x: x, y: y });
+        //!
+        if (y !== this.columns - 1 - y) {
+          pixelarr2.push({ x: x, y: this.columns - 1 - y });
+        }
         // this.drawGrid();
       }
     }
-    this.colorLineGrid(pixelarr);
+    this.colorLineGrid(pixelarr, "black");
+    this.colorLineGrid(pixelarr2, "red");
   }
   cancelLine() {
     this.prevColorOfLine.forEach((item) => {
@@ -141,25 +160,66 @@ class Grid {
 
     this.drawGrid();
   }
-  colorLineGrid(arr) {
+  colorLineGrid(arr, color) {
     //color prev
-    this.prevColorOfLine.forEach((item) => {
-      this.grid[item.x][item.y] = item.color;
-    });
+    if (color === "black") {
+      this.prevColorOfLine.forEach((item) => {
+        this.grid[item.x][item.y] = item.color;
+      });
+    } else {
+      this.prevColorOfLine2.forEach((item) => {
+        this.grid[item.x][item.y] = item.color;
+      });
+    }
 
     //color new
     this.prevColorOfLine = [];
-    arr.forEach((item) => {
-      this.prevColorOfLine.push({
-        x: item.x,
-        y: item.y,
-        color: this.grid[item.x][item.y],
+    this.prevColorOfLine2 = [];
+    if (color === "black") {
+      arr.forEach((item) => {
+        this.prevColorOfLine.push({
+          x: item.x,
+          y: item.y,
+          color: this.grid[item.x][item.y],
+        });
+        // this.grid[item.x][item.y] = this.getColor();
+        this.grid[item.x][item.y] = color;
       });
-      this.grid[item.x][item.y] = this.getColor();
-    });
+    } else {
+      arr.forEach((item) => {
+        this.prevColorOfLine2.push({
+          x: item.x,
+          y: item.y,
+          color: this.grid[item.x][item.y],
+        });
+        // this.grid[item.x][item.y] = this.getColor();
+        this.grid[item.x][item.y] = color;
+      });
+    }
+
     this.drawGrid();
     //add new to prev
   }
+  // colorLineGrid(arr, color) {
+  //   //color prev
+  //   this.prevColorOfLine.forEach((item) => {
+  //     this.grid[item.x][item.y] = item.color;
+  //   });
+
+  //   //color new
+  //   this.prevColorOfLine = [];
+  //   arr.forEach((item) => {
+  //     this.prevColorOfLine.push({
+  //       x: item.x,
+  //       y: item.y,
+  //       color: this.grid[item.x][item.y],
+  //     });
+  //     // this.grid[item.x][item.y] = this.getColor();
+  //     this.grid[item.x][item.y] = color;
+  //   });
+  //   this.drawGrid();
+  //   //add new to prev
+  // }
   //!LINE FINISHED
 
   //! CIRCLE
@@ -482,8 +542,10 @@ class Grid {
     //   this.drawGrid();
     //   return;
     // }
-
+    const mirrorC = this.columns - c - 1;
     this.grid[r][c] = this.getColor();
+    //!MIRROR
+    this.grid[r][mirrorC] = this.getColor();
     this.drawGrid();
   }
   erase(e) {
