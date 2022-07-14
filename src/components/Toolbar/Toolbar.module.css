@@ -3,9 +3,10 @@
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  background-color: #27496d;
+  background-color: #3b3b3f;
   color: white;
   position: relative;
+  border-bottom: 2px solid  #1c1c1c;
 }
 .menu {
   background-color: white;
@@ -15,12 +16,15 @@
   position: absolute;
 }
 .tool {
-  border: 1px solid #27496d;
+  border: 1px solid #3b3b3f;
   padding: 0.4rem 0.5rem;
   /* margin: 0.1rem 0.2rem; */
-  background-color: #27496d;
+  background-color: #3b3b3f;
   font-size: 0.98rem;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin: 0;
   /* border-radius: 4px; */
   color: white;
@@ -28,8 +32,11 @@
 .tool:hover {
   background-color: #0099ff;
 }
-.tool:disabled:hover{
-  background-color: #3ab0ff ;
+.tool:disabled:hover {
+  background-color: #3ab0ff;
   /* color: white;
   border-radius: 8px; */
+}
+.toolIcon {
+  margin: 0 0.5rem;
 }

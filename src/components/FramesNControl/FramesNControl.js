@@ -102,7 +102,7 @@ function FramesNControl() {
           disabled={currIndex === 0}
           onClick={copyPreviousFrame}
         >
-          <FiCopy className={styles.icon} /> Copy previous Frame
+          <FiCopy className={styles.icon} /> Copy Previous Frame
         </Button>
         <Button
           className={styles.frameControlButton}
@@ -114,7 +114,7 @@ function FramesNControl() {
           ) : (
             <FiCheckSquare className={styles.icon} />
           )}
-          onion skin
+          Onion Skin
         </Button>
       </div>
 

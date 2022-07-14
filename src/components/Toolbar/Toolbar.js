@@ -3,6 +3,7 @@ import styles from "./Toolbar.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { startRecord } from "../../utils/export";
 import Modal from "../Modal/Modal";
+import { FaRedo, FaUndo } from "react-icons/fa";
 import { useState } from "react";
 function Toolbar() {
   const [showModal, setShowModal] = useState(false);
@@ -66,7 +67,7 @@ function Toolbar() {
       </Button>
 
       <Button className={styles.tool} onClick={exportHandler}>
-        export
+        Export
       </Button>
       <Button
         className={styles.tool}
@@ -77,7 +78,8 @@ function Toolbar() {
         }
         onClick={undoHandler}
       >
-        undo
+        <FaUndo className={styles.toolIcon} />
+        Undo
       </Button>
       <Button
         className={styles.tool}
@@ -88,7 +90,7 @@ function Toolbar() {
         }
         onClick={redoHandler}
       >
-        redo
+        Redo <FaRedo className={styles.toolIcon} />
       </Button>
     </div>
   );

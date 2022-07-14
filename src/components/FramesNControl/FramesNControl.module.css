@@ -1,6 +1,6 @@
 .frames {
   background-color: #00356f;
-
+border-top: 2px solid #1c1c1c;
   position: fixed;
   width: 100%;
   bottom: 0;
@@ -12,7 +12,7 @@
 
   padding-top: 8px;
   /* border: 1px solid skyblue; */
-    /* height: 134px; */
+  /* height: 134px; */
 
   display: flex;
   background-color: #00356f;
@@ -34,18 +34,21 @@
   max-width: 100%;
 }
 .frameControlButtons {
-  background-color: #27496d;
+  background-color: #3b3b3f;
   display: flex;
   /* position: fixed; */
   /* bottom: 0; */
-  padding: 0.2rem 0;
+  /* padding: 0.2rem 0; */
 }
 .frameControlButton {
   margin: 0;
-  background-color: #27496d;
+  background-color: #3b3b3f;
   color: white;
-  padding-left: 0.8rem;
-  padding-right: 0.8rem;
+  /* padding-left: 0.8rem;
+  padding-right: 0.8rem; */
+  /* margin: 0.2rem; */
+  /* padding-top: 1rem; */
+  padding: 0.5rem 0.8rem;
   display: flex;
   justify-content: center;
   align-items: center;

@@ -9,6 +9,7 @@ const initialState = {
   pencil: true,
   ellipse: false,
   move: false,
+  mirror: false,
 };
 export const canvasReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -49,6 +50,7 @@ export const canvasReducer = (state = initialState, action) => {
         pencil: false,
         ellipse: false,
         move: false,
+        mirror: false,
       };
     }
     case "ERASER": {
@@ -99,6 +101,7 @@ export const canvasReducer = (state = initialState, action) => {
         flood: false,
         eraser: false,
         move: false,
+        mirror: false,
       };
     }
     case "MOVE": {
@@ -110,7 +113,11 @@ export const canvasReducer = (state = initialState, action) => {
         line: false,
         flood: false,
         eraser: false,
+        mirror: false,
       };
+    }
+    case "MIRROR": {
+      return { ...state, mirror: !state.mirror };
     }
     default:
       return state;

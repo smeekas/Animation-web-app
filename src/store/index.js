@@ -6,6 +6,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import exportReducer from "../reducers/exportReducer";
 import onionScreenReducer from "../reducers/onionScreenReducer";
 import undoReducer from "../reducers/undoReducer";
+import tooltipReducer from "../reducers/tooltipReducer";
 const store = createStore(
   combineReducers({
     canvas: canvasReducer,
@@ -13,6 +14,7 @@ const store = createStore(
     export: exportReducer,
     onion: onionScreenReducer,
     undo: undoReducer,
+    tooltip:tooltipReducer
   }),
   composeWithDevTools()
 );
