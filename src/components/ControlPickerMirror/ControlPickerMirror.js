@@ -8,7 +8,7 @@ function ControlPickerMirror() {
   const [whichColor, setWhichColor] = useState(null);
   const [showTooltip, setShowTooltip] = useState(true);
   const colorHandler = (e) => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     dispatch({ type: "COLOR", colorVal: e.target.value, color: whichColor });
   };
   const color = useSelector((state) => state.canvas.color);
@@ -51,7 +51,7 @@ function ControlPickerMirror() {
           }}
           //----------------------------------------------
           data-for="main"
-          data-tip="primary color"
+          data-tip="Primary Color"
           id="primary"
           onClick={() => {
             setWhichColor("primary");
@@ -71,7 +71,7 @@ function ControlPickerMirror() {
           }}
           //----------------------------------------------
           data-for="main"
-          data-tip="secondary color"
+          data-tip="Secondary Color"
           onClick={() => {
             setWhichColor("secondary");
             colorRef.current.click();
@@ -88,7 +88,7 @@ function ControlPickerMirror() {
           }}
           //----------------------------------------------
           data-for="main"
-          data-tip="switch primary & secondary "
+          data-tip="Switch Primary & Secondary "
           onClick={() => dispatch({ type: "TOGGLE_COLOR" })}
           className={styles.switchColor}
         />
@@ -107,8 +107,8 @@ function ControlPickerMirror() {
         onClick={() =>
           mirrorClickable ? dispatch({ type: "MIRROR" }) : () => {}
         }
-        className={`${styles.mirror} ${
-          mirror ? styles.mirrorEnabled : styles.mirrorDisabled
+        className={` ${mirror ? styles.mirrorEnabled : styles.mirrorDisabled} ${
+          styles.mirror
         }`}
       >
         <div className={styles.mirrorDot}></div>

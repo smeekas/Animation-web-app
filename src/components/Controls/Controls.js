@@ -5,6 +5,8 @@ import pencil from "../../assets/pencil.png";
 import paintBucket from "../../assets/paintBucket.png";
 import diagonalLine from "../../assets/diagonalLine.png";
 import ellipse from "../../assets/ellipse.png";
+import moveImg from "../../assets/move.png";
+import rectangleImg from "../../assets/square.png";
 import colorWheel from "../../assets/colorWheel.png";
 import { startRecord } from "../../utils/export";
 import styles from "./Controls.module.css";
@@ -32,6 +34,7 @@ function Controls() {
   const pencilRef = useRef();
   const ellipseRef = useRef();
   const moveRef = useRef();
+  const rectangleRef = useRef();
   const allControl = useSelector((state) => state.canvas);
   const colorHandler = (e) => {
     console.log(e.target.value);
@@ -52,11 +55,13 @@ function Controls() {
   const ellipseHandler = (e) => {
     dispatch({ type: "ELLIPSE", value: e.target.checked });
   };
+  const rectangleHandler = (e) => {
+    dispatch({ type: "RECT", value: e.target.checked });
+  };
   const moveHandler = (e) => {
     dispatch({ type: "MOVE", value: e.target.checked });
   };
   const horizontalMirrorHandler = () => {
-    //TODO
   };
   // console.log(color);
   return (
@@ -68,6 +73,7 @@ function Controls() {
         // }}
         className={styles.drawControl}
       >
+        <div className={styles.toolName}>TOOLS</div>
         <Control
           tooltipName="Paint Bucket"
           imgSrc={paintBucket}
@@ -80,7 +86,7 @@ function Controls() {
         />
 
         <Control
-          tooltipName="Free Hand"
+          tooltipName="Pencil Tool"
           imgSrc={pencil}
           imgAlt="pencil"
           onClick={() => pencilRef.current.click()}
@@ -91,7 +97,7 @@ function Controls() {
         />
 
         <Control
-          tooltipName="Eraser"
+          tooltipName="Eraser Tool"
           imgSrc={eraser}
           imgAlt="eraser"
           onClick={() => eraserRef.current.click()}
@@ -102,7 +108,7 @@ function Controls() {
         />
 
         <Control
-          tooltipName="Line"
+          tooltipName="Line Tool"
           imgSrc={diagonalLine}
           imgAlt="line"
           onClick={() => lineRef.current.click()}
@@ -113,7 +119,7 @@ function Controls() {
         />
 
         <Control
-          tooltipName="Ellipse"
+          tooltipName="Ellipse Tool"
           imgSrc={ellipse}
           imgAlt="ellipse"
           onClick={() => ellipseRef.current.click()}
@@ -123,9 +129,19 @@ function Controls() {
           ref={ellipseRef}
         />
         <Control
-          tooltipName="move"
-          imgSrc={paintBucket}
-          imgAlt="ellipse"
+          tooltipName="Rectangle Tool"
+          imgSrc={rectangleImg}
+          imgAlt="rectangleImg"
+          onClick={() => rectangleRef.current.click()}
+          onChange={(e) => rectangleHandler(e)}
+          checked={allControl.rect}
+          type="checkbox"
+          ref={rectangleRef}
+        />
+        <Control
+          tooltipName="Move Tool"
+          imgSrc={moveImg}
+          imgAlt="move"
           onClick={() => moveRef.current.click()}
           onChange={(e) => moveHandler(e)}
           checked={allControl.move}

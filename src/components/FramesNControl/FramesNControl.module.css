@@ -1,6 +1,7 @@
 .frames {
-  background-color: #00356f;
-border-top: 2px solid #1c1c1c;
+  /* background-color: #00356f; */
+  background-color: #232323;
+  border-top: 2px solid #1c1c1c;
   position: fixed;
   width: 100%;
   bottom: 0;
@@ -15,7 +16,8 @@ border-top: 2px solid #1c1c1c;
   /* height: 134px; */
 
   display: flex;
-  background-color: #00356f;
+  /* background-color: #00356f; */
+  background-color: #232323;
   justify-content: flex-start;
   align-items: baseline;
   /* flex-wrap: wrap; */
@@ -60,7 +62,7 @@ border-top: 2px solid #1c1c1c;
   background-color: #0099ff;
 }
 .frameControlButton:disabled:hover {
-  background-color: #27496d;
+  background-color: #3b3b3f;
 }
 .icon {
   font-weight: bolder;
@@ -68,24 +70,28 @@ border-top: 2px solid #1c1c1c;
   padding-right: 0.5rem;
 }
 .controlFrame {
-  background-color: #005a96;
+  /* background-color: #005a96; */
+  background-color: #232323;
   display: flex;
+  color: white;
+  font-size: 0.9rem;
   align-items: center;
-  border: 1px solid green;
+  /* border: 1px solid green; */
   padding: 0.3rem;
 }
-
-.controlFrame .controlFrameIcon {
+.controlFrameIcon {
   font-size: 1.3rem;
+}
+.controlFrame .controlFrameIcon {
   /* border: 1px solid red; */
   display: flex;
   justify-content: center;
-  padding: 0.3rem;
+  padding: 0.3rem 0.4rem;
   margin: 0 0.2rem;
   color: white;
   align-items: center;
 }
 .controlFrameIcon:hover {
   border-radius: 4px;
-  background-color: gray;
+  background-color: rgba(255, 255, 255, 0.1);
 }

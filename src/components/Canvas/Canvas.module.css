@@ -1,7 +1,6 @@
 .canvas {
   /* background-color: blueviolet; */
   margin: 0 auto;
-
 }
 .canvasDiv {
   flex: 1;
@@ -9,7 +8,8 @@
   margin-top: 4rem;
   justify-content: center;
   /* align-items: center; */
-  background-color: #142850;
+  /* background-color: #142850; */
+  background-color: #232323;
 }
 canvas {
   /* width: 250px;
@@ -17,7 +17,7 @@ canvas {
   /* box-sizing: border-box; */
   background-color: white;
   /* background-image: url('../../assets/colorWheel.png'); */
-  
+
   z-index: 111;
   padding: 0;
   margin: 0;

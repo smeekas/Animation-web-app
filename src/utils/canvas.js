@@ -225,7 +225,137 @@ class Grid {
   //   //add new to prev
   // }
   //!LINE FINISHED
+  //!RECTANGLE
+  initRect(cX, cY, left, top) {
+    [this.rectY, this.rectX] = this.getPixel(cX, cY, left, top);
+  }
+  drawRect(cX, cY, left, top) {
+    let [endY, endX] = this.getPixel(cX, cY, left, top);
+    let cordX3 = endX,
+      cordY3 = this.rectY;
 
+    let cordX4 = this.rectX,
+      cordY4 = endY;
+    this.rectArr = [];
+    // this.rectArr.push({ x: this.rectX, y: this.rectY });
+    // this.rectArr.push({ x: endX, y: endY });
+    // this.rectArr.push({ x: cordX3, y: cordY3 });
+    // this.rectArr.push({ x: cordX4, y: cordY4 });
+    // console.log(this.rectX, this.rectY, "\n");
+    // console.log(cordX3, cordY3, "\n");
+    // console.log(endX, endY, "\n");
+    // console.log(cordX4, cordY4, "\n");
+    // console.log("---------------");
+    if (this.rectX <= endX && this.rectY <= endY) {
+      // console.log(1);
+      for (let i = this.rectX; i <= endX; i++) {
+        this.rectArr.push({
+          x: i,
+          y: this.rectY,
+        });
+        this.rectArr.push({
+          x: i,
+          y: cordY4,
+        });
+      }
+      // console.log(this.rectArr)
+      for (let i = this.rectY + 1; i < endY; i++) {
+        this.rectArr.push({
+          x: this.rectX,
+          y: i,
+        });
+        this.rectArr.push({
+          x: endX,
+          y: i,
+        });
+      }
+      // console.log(this.rectArr);
+    } else if (this.rectX <= endX && this.rectY >= endY) {
+      // console.log("2");
+      for (let i = cordX4; i <= endX; i++) {
+        this.rectArr.push({
+          x: i,
+          y: this.rectY,
+        });
+        this.rectArr.push({
+          x: i,
+          y: cordY4,
+        });
+      }
+      for (let i = cordY4 + 1; i < this.rectY; i++) {
+        this.rectArr.push({
+          x: this.rectX,
+          y: i,
+        });
+        this.rectArr.push({
+          x: endX,
+          y: i,
+        });
+      }
+    } else if (this.rectX > endX && this.rectY < endY) {
+      // console.log("3");
+      for (let i = endX; i <= this.rectX; i++) {
+        //!here is problem
+        this.rectArr.push({
+          x: i,
+          y: endY,
+        });
+        this.rectArr.push({
+          x: i,
+          y: this.rectY,
+        });
+      }
+      for (let i = this.rectY + 1; i < endY; i++) {
+        this.rectArr.push({
+          x: this.rectX,
+          y: i,
+        });
+        this.rectArr.push({
+          x: endX,
+          y: i,
+        });
+      }
+    } else {
+      // console.log("4");
+
+      for (let i = endX; i <= this.rectX; i++) {
+        //!here is problem
+        this.rectArr.push({
+          x: i,
+          y: endY,
+        });
+        this.rectArr.push({
+          x: i,
+          y: this.rectY,
+        });
+      }
+      for (let i = endY + 1; i < this.rectY; i++) {
+        this.rectArr.push({
+          x: this.rectX,
+          y: i,
+        });
+        this.rectArr.push({
+          x: endX,
+          y: i,
+        });
+      }
+    }
+    this.colorCircleGrid(this.rectArr);
+  }
+  finishRect(cX, cY, left, top) {
+    // let [endX, endY] = this.getPixel(cX, cY, left, top);
+    this.drawRect(cX, cY, left, top);
+    this.rectX = this.rectY = null;
+    this.prevColorOfCircle = [];
+  }
+  cancelRect() {
+    this.prevColorOfCircle.forEach((item) => {
+      this.grid[item.x][item.y] = item.color;
+    });
+    this.prevColorOfCircle = [];
+    this.drawGrid();
+  }
+  //!RECTANGLE FINISH
   //! CIRCLE
 
   initCircle(cX, cY, left, top) {
@@ -626,6 +756,12 @@ class Grid {
       console.log(this.newMoveArr);
     }
     //! X ends
+
+    this.newNewMoveArr = [];
+    // console.log(endX, endY);
+    for (let i = 0; i < this.rows; i++) {
+      this.newNewMoveArr.push(new Array(this.columns).fill("#ffffff"));
+    }
     //! y starts
     if (this.moveY > endY) {
       // console.log("here");
@@ -635,23 +771,23 @@ class Grid {
       let j = 0;
       // console.log(diffY);
       for (let i = diffY; i < this.rows; i++) {
-        this.newMoveArr[j] = this.newMoveArr[i];
+        this.newNewMoveArr[j] = this.newMoveArr[i];
         j++;
       }
       // console.log(this.newMoveArr);s
-    } else if (this.moveY < endY) {
+    } else if (this.moveY <= endY) {
       const diffY = endY - this.moveY;
       let j = 0;
       for (let i = diffY; i < this.rows; i++) {
-        this.newMoveArr[i] = this.newMoveArr[j++];
+        this.newNewMoveArr[i] = this.newMoveArr[j++];
       }
     }
     //! y ends
-    this.drawFrame(this.newMoveArr);
+    this.drawFrame(this.newNewMoveArr);
   }
   finishMoveGrid(cX, cY, left, top) {
-    const [endX, endY] = this.getPixel(cX, cY, left, top);
-    this.addFrame(this.newMoveArr);
+    // const [endX, endY] = this.getPixel(cX, cY, left, top);
+    this.addFrame(this.newNewMoveArr);
   }
   //TODO NOT WORKING
   floodfill(e) {

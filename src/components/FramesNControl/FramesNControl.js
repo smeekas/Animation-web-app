@@ -135,7 +135,7 @@ function FramesNControl() {
         className={styles.frameAndControl}
       >
         <div className={styles.controlFrame}>
-          <section>Controls</section>
+          <section>CONTROLS</section>
           <section className={styles.controlFrameIcon}>
             <FiTrash2 onClick={removeFramehandler} />
           </section>

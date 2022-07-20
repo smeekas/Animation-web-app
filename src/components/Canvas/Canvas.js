@@ -54,11 +54,11 @@ function Canvas() {
         {/* {onion && (
           <img className={styles.onionImage} src={prevImage} alt="onion" />
         )} */}
+        {/* //TODO RECTANGLE  */}
         <canvas
           style={onion ? { opacity: "0.5" } : {}}
           onContextMenu={(e) => e.preventDefault()}
           onPointerMove={(e) => {
-            //TODO set color
             if (e.buttons === 1 || e.buttons === 2) {
               if (allControl.line) {
                 grid.drawLine(
@@ -94,6 +94,17 @@ function Canvas() {
                   e.target.offsetLeft,
                   e.target.offsetTop
                 );
+                return;
+              }
+              if (allControl.rect) {
+                // console.log("here");
+                grid.drawRect(
+                  e.clientX,
+                  e.clientY,
+                  e.target.offsetLeft,
+                  e.target.offsetTop
+                );
+                return;
               }
             }
           }}
@@ -143,6 +154,16 @@ function Canvas() {
                 e.target.offsetLeft,
                 e.target.offsetTop
               );
+              return;
+            }
+            if (allControl.rect) {
+              grid.initRect(
+                e.clientX,
+                e.clientY,
+                e.target.offsetLeft,
+                e.target.offsetTop
+              );
+              return;
             }
           }}
           onMouseUp={(e) => {
@@ -167,7 +188,15 @@ function Canvas() {
                 e.target.offsetLeft,
                 e.target.offsetTop
               );
+            } else if (allControl.rect) {
+              grid.finishRect(
+                e.clientX,
+                e.clientY,
+                e.target.offsetLeft,
+                e.target.offsetTop
+              );
             }
+
             setTimeout(() => {
               dispatch({
                 type: "PUSH_TO_HISTORY",
@@ -184,6 +213,9 @@ function Canvas() {
               }
               if (allControl.ellipse) {
                 grid.cancelEllipse();
+              }
+              if (allControl.rect) {
+                grid.cancelRect();
               }
             }
           }}

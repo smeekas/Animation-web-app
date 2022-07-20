@@ -10,6 +10,7 @@ const initialState = {
   ellipse: false,
   move: false,
   mirror: false,
+  rect: false,
 };
 export const canvasReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -51,6 +52,7 @@ export const canvasReducer = (state = initialState, action) => {
         ellipse: false,
         move: false,
         mirror: false,
+        rect: false,
       };
     }
     case "ERASER": {
@@ -62,6 +64,7 @@ export const canvasReducer = (state = initialState, action) => {
         pencil: false,
         ellipse: false,
         move: false,
+        rect: false,
       };
     }
     case "IMAGE": {
@@ -79,6 +82,7 @@ export const canvasReducer = (state = initialState, action) => {
         pencil: false,
         ellipse: false,
         move: false,
+        rect: false,
       };
     }
     case "PENCIL": {
@@ -90,6 +94,7 @@ export const canvasReducer = (state = initialState, action) => {
         eraser: false,
         ellipse: false,
         move: false,
+        rect: false,
       };
     }
     case "ELLIPSE": {
@@ -102,6 +107,7 @@ export const canvasReducer = (state = initialState, action) => {
         eraser: false,
         move: false,
         mirror: false,
+        rect: false,
       };
     }
     case "MOVE": {
@@ -114,6 +120,20 @@ export const canvasReducer = (state = initialState, action) => {
         flood: false,
         eraser: false,
         mirror: false,
+        rect: false,
+      };
+    }
+    case "RECT": {
+      return {
+        ...state,
+        move: false,
+        ellipse: false,
+        pencil: false,
+        line: false,
+        flood: false,
+        eraser: false,
+        mirror: false,
+        rect: true,
       };
     }
     case "MIRROR": {

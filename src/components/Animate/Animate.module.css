@@ -1,17 +1,18 @@
-.animate{
-    display: flex;
-    flex-direction: column;
-    /* background-color: black; */
-    height: 100%;
-    position: relative;
-    /* align-items: stretch; */
+.animate {
+  display: flex;
+  flex-direction: column;
+  /* background-color: black; */
+  height: 100%;
+  position: relative;
+  /* align-items: stretch; */
 }
-.core{
-    display: flex;
-flex: 1;
-    background-color: #142850;
-    flex-direction: row;
-    
-    /* justify-content: center; */
-    /* align-items: stretch; */
+.core {
+  display: flex;
+  flex: 1;
+  /* background-color: #142850; */
+  background-color: #232323;
+  flex-direction: row;
+
+  /* justify-content: center; */
+  /* align-items: stretch; */
 }
