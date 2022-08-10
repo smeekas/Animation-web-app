@@ -24,7 +24,7 @@ const ModalComponent = ({ closeModal }) => {
     }
   };
   const exportHandler = () => {
-    startRecord();
+    startRecord(modalCloseHandler);
   };
   return (
     <div className={styles.backdrop}>

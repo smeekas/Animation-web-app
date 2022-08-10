@@ -3,8 +3,11 @@ let allFrames, grid, canvasRef;
 var cStream,
   recorder,
   chunks = [];
-
-export function startRecord() {
+//TODO: close the modal DONE
+//TODO: change FPS
+let closeFunction = null;
+export function startRecord(closeHandler) {
+  closeFunction = closeHandler;
   // this.textContent = "stop recording";
   // console.log("HERE");
   store.dispatch({ type: "HIDE_WHILE_EXPORT" });
@@ -39,6 +42,7 @@ function stopRecording() {
   recorder.stop();
   store.dispatch({ type: "SHOW_EXPORT_FINISHED" });
   console.log("stopped");
+  closeFunction();
 }
 
 function exportStream(e) {
@@ -72,6 +76,11 @@ var anim = function () {
   console.log("LEN: " + allFrames.length);
   const to = setInterval(() => {
     nc++;
+    if (nc === allFrames.length) {
+      clearInterval(to);
+      stopRecording();
+      return;
+    }
     console.log("here", nc);
     grid.drawFrame(allFrames[nc]);
     if (nc === allFrames.length - 1) {
