@@ -58,7 +58,8 @@ function Toolbar() {
 
   return (
     <div className={styles.toolbar}>
-      {showModal && <Modal />}
+      {/* {showModal && <Modal />} */}
+    {showModal &&  <Modal closeModal={setShowModal} />}
       <Button className={styles.tool} onClick={downloadAllFrames}>
         Download All Frames
       </Button>

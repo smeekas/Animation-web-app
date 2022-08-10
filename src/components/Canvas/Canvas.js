@@ -22,10 +22,10 @@ function Canvas() {
     imageOverCanvas = frameObj.frames[frameObj.currFrame - 1].image;
     imageClassName = styles.onionImage;
   }
-  if (export_hide) {
-    imageOverCanvas = temp;
-    imageClassName = styles.exportImage;
-  }
+  // if (export_hide) {
+  //   imageOverCanvas = temp;
+  //   imageClassName = styles.exportImage;
+  // }
   const videoSrc = useSelector((state) => state.export.videoBlob);
   const allControl = useSelector((state) => state.canvas);
   useEffect(() => {
@@ -48,15 +48,15 @@ function Canvas() {
           height: `500px`,
         }}
       >
-        {(onion || export_hide) && (
+        {/* {(onion || export_hide) && (
+          <img className={imageClassName} src={imageOverCanvas} alt="onion" /> */}
+        {onion && (
           <img className={imageClassName} src={imageOverCanvas} alt="onion" />
         )}
-        {/* {onion && (
-          <img className={styles.onionImage} src={prevImage} alt="onion" />
-        )} */}
         {/* //TODO RECTANGLE  */}
         <canvas
           style={onion ? { opacity: "0.5" } : {}}
+          // style={export_hide ? { display: "none" } : { display: "flex" }}
           onContextMenu={(e) => e.preventDefault()}
           onPointerMove={(e) => {
             if (e.buttons === 1 || e.buttons === 2) {

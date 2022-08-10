@@ -31,3 +31,7 @@ canvas {
   position: absolute;
   opacity: 0.2;
 }
+.exportImage{
+  position: absolute;
+  z-index: 112;
+}

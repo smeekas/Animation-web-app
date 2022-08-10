@@ -6,7 +6,8 @@ var cStream,
 
 export function startRecord() {
   // this.textContent = "stop recording";
-  console.log("HERE");
+  // console.log("HERE");
+  store.dispatch({ type: "HIDE_WHILE_EXPORT" });
   allFrames = store.getState().frames.frames.map((item) => item.grid);
   grid = store.getState().canvas.grid;
   canvasRef = store.getState().canvas.canvasRef;
@@ -36,6 +37,7 @@ function saveChunks(e) {
 
 function stopRecording() {
   recorder.stop();
+  store.dispatch({ type: "SHOW_EXPORT_FINISHED" });
   console.log("stopped");
 }
 
@@ -65,25 +67,17 @@ function exportStream(e) {
 // var x = 0;
 // var ctx = store.getState().canvas.canfasRef;
 // let record = true;
-let nc = 0;
+let nc = -1;
 var anim = function () {
+  console.log("LEN: " + allFrames.length);
   const to = setInterval(() => {
-    if (nc === allFrames.length) {
+    nc++;
+    console.log("here", nc);
+    grid.drawFrame(allFrames[nc]);
+    if (nc === allFrames.length - 1) {
       clearInterval(to);
       stopRecording();
+      return;
     }
-    console.log("here");
-    grid.drawFrame(allFrames[nc]);
-    nc++;
-    // ctx.clearRect(0, 0, 500, 200);
-    // ctx.fillStyle = "ivory";
-    // ctx.fillRect(0, 0, 500, 200);
-    // ctx.fillStyle = "black";
-    // ctx.fillRect(getRand() * 300, getRand() * 100, 50, 50);
   }, 1000);
 };
-
-// anim();
-function getRand() {
-  return Math.random();
-}
