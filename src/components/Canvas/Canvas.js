@@ -1,31 +1,21 @@
 import { useEffect } from "react";
-// import { useState } from "react";
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./Canvas.module.css";
 import grid from "../../utils/canvas";
-import { getCanvasGrid, getCanvasImage } from "../../utils/frame";
-import temp from "../../assets/temp.png";
+import { getCanvasAsImage, getCanvasGrid, getCanvasImage } from "../../utils/frame";
+import { canvasDimension } from "../../variables";
 function Canvas() {
   const canvasRef = useRef();
   const dispatch = useDispatch();
   const onion = useSelector((state) => state.onion.showScreen);
   const frameObj = useSelector((state) => state.frames);
-  const export_hide = useSelector((state) => state.export.hide);
-  // const color = useSelector((state) => state.canvas.color);
-  // const prevImage = onion
-  //   ? frameObj.frames[frameObj.currFrame - 1].image
-  //   : null;
   let imageOverCanvas = null,
     imageClassName;
   if (onion && frameObj.currFrame !== 0) {
-    imageOverCanvas = frameObj.frames[frameObj.currFrame - 1].image;
+    imageOverCanvas = getCanvasAsImage(frameObj.frames[frameObj.currFrame - 1].grid);
     imageClassName = styles.onionImage;
   }
-  // if (export_hide) {
-  //   imageOverCanvas = temp;
-  //   imageClassName = styles.exportImage;
-  // }
   const videoSrc = useSelector((state) => state.export.videoBlob);
   const allControl = useSelector((state) => state.canvas);
   useEffect(() => {
@@ -33,10 +23,11 @@ function Canvas() {
       type: "CANVAS_INIT",
       canvasRef: canvasRef.current,
     });
-    canvasRef.current.width = 500;
-    canvasRef.current.height = 500;
+    canvasRef.current.width = canvasDimension;
+    canvasRef.current.height = canvasDimension;
     if (!grid.c) {
       grid.addCanvas(canvasRef.current.getContext("2d"));
+      grid.drawBlank()
     }
   }, [dispatch]);
   return (
@@ -44,22 +35,20 @@ function Canvas() {
       <div
         className={styles.canvas}
         style={{
-          width: `500px`,
-          height: `500px`,
+          width: `${canvasDimension}px`,
+          height: `${canvasDimension}px`,
         }}
       >
-        {/* {(onion || export_hide) && (
-          <img className={imageClassName} src={imageOverCanvas} alt="onion" /> */}
+
         {onion && (
           <img className={imageClassName} src={imageOverCanvas} alt="onion" />
         )}
-        {/* //TODO RECTANGLE  */}
         <canvas
           style={onion ? { opacity: "0.5" } : {}}
-          // style={export_hide ? { display: "none" } : { display: "flex" }}
           onContextMenu={(e) => e.preventDefault()}
           onPointerMove={(e) => {
             if (e.buttons === 1 || e.buttons === 2) {
+              console.log("MOVE");
               if (allControl.line) {
                 grid.drawLine(
                   e.clientX,
@@ -97,7 +86,6 @@ function Canvas() {
                 return;
               }
               if (allControl.rect) {
-                // console.log("here");
                 grid.drawRect(
                   e.clientX,
                   e.clientY,
@@ -167,6 +155,12 @@ function Canvas() {
             }
           }}
           onMouseUp={(e) => {
+            dispatch({
+              type: "CURRENT_FRAME_UPDATE", payload: {
+                grid: getCanvasGrid(),
+                image: getCanvasImage(),
+              }
+            })
             if (allControl.line) {
               grid.finishLine(
                 e.clientX,
@@ -222,13 +216,6 @@ function Canvas() {
           ref={canvasRef}
         ></canvas>
       </div>
-      <section className={styles.op}>
-        {videoSrc && (
-          <video controls>
-            <source src={videoSrc} type="videp/mp4" />
-          </video>
-        )}
-      </section>
     </div>
   );
 }

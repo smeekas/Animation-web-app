@@ -6,6 +6,7 @@
   background-color: #3b3b3f;
   color: white;
   position: relative;
+  /* gap: 1rem; */
   border-bottom: 2px solid  #1c1c1c;
 }
 .menu {
@@ -16,8 +17,8 @@
   position: absolute;
 }
 .tool {
-  border: 1px solid #3b3b3f;
-  padding: 0.4rem 0.5rem;
+  border-right: 1px solid #232325;
+  padding: 0.4rem 1rem;
   /* margin: 0.1rem 0.2rem; */
   background-color: #3b3b3f;
   font-size: 0.98rem;

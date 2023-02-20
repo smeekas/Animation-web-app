@@ -1,7 +1,7 @@
 import styles from "./Modal.module.css";
 import ReactDOM from "react-dom";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { startRecord } from "../../utils/export";
 function Modal(props) {
   return ReactDOM.createPortal(
@@ -11,23 +11,21 @@ function Modal(props) {
 }
 export default Modal;
 const ModalComponent = ({ closeModal }) => {
-  // console.log(closeModal);
-  const hide = useSelector((state) => state.export.hide);
+  const dispatch=useDispatch();
   const [fps, setFps] = useState(1);
   const inputChangeHandler = (e) => {
     const framesPerSecond = +e.target.value;
+    dispatch({type:"FPS",fps:framesPerSecond})
     setFps(framesPerSecond);
   };
   const modalCloseHandler = () => {
-    if (!hide) {
       closeModal(false);
-    }
   };
   const exportHandler = () => {
-    startRecord(modalCloseHandler);
+    startRecord();
   };
   return (
-    <div className={styles.backdrop}>
+    <div onClick={()=>console.log("back") } className={styles.backdrop}>
       <div className={styles.modal}>
         <div className={styles.header}>
           <section onClick={modalCloseHandler}>X</section>
@@ -49,11 +47,11 @@ const ModalComponent = ({ closeModal }) => {
           {/* <div className={styles.rangeLimit}>25</div> */}
           {/* </div> */}
           <button
-            disabled={hide}
+        
             onClick={exportHandler}
             className={styles.btn}
           >
-            {!hide ? "Export" : "Exporting"}
+          Export
           </button>
         </section>
       </div>

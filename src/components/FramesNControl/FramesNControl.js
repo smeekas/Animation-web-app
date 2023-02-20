@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import Frame from "../Frame/Frame";
-import { copyGrid, getCanvasGrid, getCanvasImage } from "../../utils/frame";
+import { copyGrid, getBlankCanvasImage, getCanvasGrid, getCanvasImage } from "../../utils/frame";
 import styles from "./FramesNControl.module.css";
 import Button from "../Button/Button";
 import { useState } from "react";
@@ -23,17 +23,18 @@ function FramesNControl() {
   const showScreen = useSelector((state) => state.onion.showScreen);
   const gridObj = useSelector((state) => state.canvas.grid);
   const dispatch = useDispatch();
-  const frameAddHandler = () => {
+  const frameAddHandler = async () => {
     const gridArr = getCanvasGrid();
-    const image = getCanvasImage();
+    const image = await getCanvasImage();
     //TODO: add blank frame first, then change  as we click new frame
     //TODO: handle test cases for clicking oldframe and exporting
     //TODO: feature: download all images, undo, shift to circle, preview, preserve state,  right click to erase
+    // console.log(image);
     dispatch({
       type: "FRAME_ADD",
       payload: { image: image, grid: gridArr, currIndex: currIndex },
     });
-    gridObj.drawBlank();
+    gridObj.drawBlank()
   };
   const removeFramehandler = () => {
     if (allFrames.length === 1) {
@@ -53,12 +54,18 @@ function FramesNControl() {
     }
   };
   const moveFrameLeftHandler = () => {
-    if (currIndex === 1) {
+    if (currIndex === 0) {
       dispatch({ type: "DISABLE_ONION_SCREEN" });
+    }
+    if (currIndex === 0) {
+      return;
     }
     dispatch({ type: "MOVE_FRAME_LEFT" });
   };
   const moveFrameRightHandler = () => {
+    if (currIndex === allFrames.length - 1) {
+      return;
+    }
     dispatch({ type: "MOVE_FRAME_RIGHT" });
   };
   const copyPreviousFrame = () => {
@@ -126,8 +133,8 @@ function FramesNControl() {
         animate={
           showFrames
             ? {
-                height: ["0px", "164px"],
-              }
+              height: ["0px", "164px"],
+            }
             : {}
         }
         transition={{ duration: 0.5 }}
@@ -139,11 +146,11 @@ function FramesNControl() {
           <section className={styles.controlFrameIcon}>
             <FiTrash2 onClick={removeFramehandler} />
           </section>
-          <section className={styles.controlFrameIcon}>
-            <FiArrowLeft onClick={moveFrameLeftHandler} />
+          <section className={`${currIndex === 0 && styles.disabled} ${styles.controlFrameIcon}`}>
+            <FiArrowLeft className={currIndex === 0 && styles.disabled} onClick={moveFrameLeftHandler} />
           </section>
-          <section className={styles.controlFrameIcon}>
-            <FiArrowRight onClick={moveFrameRightHandler} />
+          <section className={`${currIndex === allFrames.length - 1 && styles.disabled} ${styles.controlFrameIcon}`}>
+            <FiArrowRight className={currIndex === allFrames.length - 1 && styles.disabled} onClick={moveFrameRightHandler} />
           </section>
         </div>
         <motion.ul className={styles.allFrames}>

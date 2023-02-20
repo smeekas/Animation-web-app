@@ -1,17 +1,8 @@
-import { findRenderedDOMComponentWithClass } from "react-dom/test-utils";
 import store from "../store";
-const storeData = store.getState();
-// const color = storeData.color;
-const floodfill = storeData.flood;
-let img;
-// console.log(floodfill);
-// const eraser = storeData.eraser;
-const refData = store.getState().canvas.canvasRef;
-// const CANVASH = refData?.height || 500;
-const CANVASH = 500;
+import { canvasDimension, dimension } from "../variables";
+const CANVASH = canvasDimension;
 
-// const CANVASW = refData?.width || 500;
-const CANVASW = 500;
+const CANVASW = canvasDimension;
 class Grid {
   constructor(rows, columns) {
     this.rows = rows;
@@ -19,8 +10,6 @@ class Grid {
 
     this.cellH = CANVASH / columns;
     this.cellW = CANVASW / rows;
-    // console.log(this.cellH, this.cellW);
-
     this.color = "red";
     this.fill = "blue";
     this.grid = [];
@@ -575,7 +564,7 @@ class Grid {
   }
   addCanvas(c) {
     this.c = c;
-    this.drawGrid();
+    // this.drawBlank();
   }
   getReduxState() {
     return store.getState();
@@ -595,10 +584,7 @@ class Grid {
       j = 0;
     for (i = 0; i < this.rows; i++) {
       for (j = 0; j < this.columns; j++) {
-        // console.log("HERE");
         this.c.fillStyle = grid[i][j];
-        // this.c.fillStyle = this.getColor();
-        // console.log(j * this.cellW, i * this.cellH);
         this.c.fillRect(j * this.cellW, i * this.cellH, this.cellW, this.cellH);
       }
     }
@@ -609,9 +595,7 @@ class Grid {
       j = 0;
     for (i = 0; i < this.rows; i++) {
       for (j = 0; j < this.columns; j++) {
-        // console.log("HERE");
         this.c.fillStyle = this.grid[i][j];
-        // console.log(j * this.cellW, i * this.cellH);
         this.c.fillRect(j * this.cellW, i * this.cellH, this.cellW, this.cellH);
       }
     }
@@ -625,57 +609,26 @@ class Grid {
         // console.log("HERE");
         this.grid[i][j] = "#ffffff";
         this.c.fillStyle = "#ffffff";
-        // console.log(j * this.cellW, i * this.cellH);
         this.c.fillRect(j * this.cellW, i * this.cellH, this.cellW, this.cellH);
       }
     }
   }
   getColor() {
-    // return `rgb(${Math.random() * 255},${Math.random() * 255},${
-    //   Math.random() * 255
-    // }) `;
-    // return this.newColor
     return store.getState().canvas.color.current;
   }
   setColor(color) {
     console.log(color);
     this.newColor = color;
   }
-  // getPosition(e) {
-  //   // console.log("pos");
-  //   // return;
-  //   const clientX = e.clientX - e.target.offsetLeft;
-  //   const clientY = e.clientY - e.target.offsetTop;
-  //   let r = Math.floor(clientY / this.cellW);
-  //   let c = Math.floor(clientX / this.cellH);
-  //   //   if (eraser.checked) {
-  //   // if (this.getEraser()) {
-  //   //   this.grid[r][c] = "#ffffff";
-  //   //   this.drawGrid();
-  //   //   return;
-  //   // }
-  //   this.grid[r][c] = this.getColor();
-  //   this.drawGrid();
-  // }
   getEraser() {
     return store.getState().canvas.eraser;
   }
   pencil(e) {
-    // if (this.getReduxState().canvas.flood) {
-    //   this.floodfill(e);
-    //   return;
-    // }
     const clientX = e.clientX - e.target.offsetLeft;
     const clientY = e.clientY - e.target.offsetTop;
 
     let r = Math.floor(clientY / this.cellW);
     let c = Math.floor(clientX / this.cellH);
-
-    // if (this.getEraser()) {
-    //   this.grid[r][c] = "#ffffff";
-    //   this.drawGrid();
-    //   return;
-    // }
     this.grid[r][c] = this.getColor();
     //!MIRROR
     if (store.getState().canvas.mirror) {
@@ -683,11 +636,6 @@ class Grid {
       const mirrorR = this.rows - r - 1;
       this.mirrorIt(r, mirrorC, this.getColor());
     }
-    // this.grid[r][mirrorC] = this.getColor();
-    // this.grid[mirrorR][c] = this.getColor();
-    // this.grid[mirrorR][mirrorC] = this.getColor();
-    // this.mirrorV();
-    // this.mirrorH();
     this.drawGrid();
   }
   mirrorV() {
@@ -826,6 +774,6 @@ class Grid {
     return this.grid;
   }
 }
-const grid = new Grid(40, 40);
+const grid = new Grid(dimension, dimension);
 store.dispatch({ type: "GRID", grid: grid });
 export default grid;

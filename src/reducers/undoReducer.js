@@ -66,6 +66,9 @@ function undoReducer(state = initialState, action) {
       newHistory[action.index].curr < newHistory[action.index].grid.length - 2;
     return { ...state, history: newHistory };
   }
+  if (action.type === "NEW_PROJECT_UNDO_REDO") {
+    return initialState
+  }
   if (action.type === "REDO_PUSH") {
     const newHistory = [...state.history];
     const canRedo =

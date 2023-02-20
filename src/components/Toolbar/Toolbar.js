@@ -3,8 +3,11 @@ import styles from "./Toolbar.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { startRecord } from "../../utils/export";
 import Modal from "../Modal/Modal";
+import { createCanvas } from "canvas";
 import { FaRedo, FaUndo } from "react-icons/fa";
 import { useState } from "react";
+import { canvasDimension } from "../../variables";
+import { getCanvasAsImage } from "../../utils/frame";
 function Toolbar() {
   const [showModal, setShowModal] = useState(false);
   const allFrames = useSelector((state) => state.frames.frames);
@@ -20,7 +23,7 @@ function Toolbar() {
       if (i === allFrames.length) {
         clearInterval(interval);
       }
-      anchor.href = allFrames[i++].image;
+      anchor.href = getCanvasAsImage(allFrames[i++].grid);
       anchor.download = "img.png";
       anchor.click();
     }, 1000);
@@ -55,11 +58,19 @@ function Toolbar() {
     gridObj.addFrame(historyObj.history[currIndex].grid[historyIndex + 2]);
     dispatch({ type: "REDO_PUSH", index: currIndex });
   };
+  const newProjectHandler = () => {
+    dispatch({ type: "NEW_PROJECT_FRAME" })
+    dispatch({ type: "NEW_PROJECT_UNDO_REDO" })
 
+    gridObj.drawBlank()
+  }
   return (
     <div className={styles.toolbar}>
       {/* {showModal && <Modal />} */}
-    {showModal &&  <Modal closeModal={setShowModal} />}
+      {showModal && <Modal closeModal={setShowModal} />}
+      <Button onClick={newProjectHandler} className={styles.tool}>
+        New Project
+      </Button>
       <Button className={styles.tool} onClick={downloadAllFrames}>
         Download All Frames
       </Button>

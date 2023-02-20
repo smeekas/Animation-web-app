@@ -1,92 +1,48 @@
 import store from "../store";
-let allFrames, grid, canvasRef;
-var cStream,
-  recorder,
-  chunks = [];
-//TODO: close the modal DONE
-//TODO: change FPS
+import GIFEncoder from "gifencoder";
+import { createCanvas } from "canvas";
+import { Buffer } from "buffer";
+import { canvasDimension, dimension, cellDimension } from "../variables";
+let allFrames, ctx;
 let closeFunction = null;
+function drawFrame(grid) {
+  let i, j;
+  for (i = 0; i < dimension; i++) {
+    for (j = 0; j < dimension; j++) {
+      ctx.fillStyle = grid[i][j];
+      ctx.fillRect(j * cellDimension, i * cellDimension, cellDimension, cellDimension);
+    }
+  }
+}
 export function startRecord(closeHandler) {
-  closeFunction = closeHandler;
-  // this.textContent = "stop recording";
-  // console.log("HERE");
-  store.dispatch({ type: "HIDE_WHILE_EXPORT" });
   allFrames = store.getState().frames.frames.map((item) => item.grid);
-  grid = store.getState().canvas.grid;
-  canvasRef = store.getState().canvas.canvasRef;
-  // set the framerate to 30FPS
-  var cStream = canvasRef.captureStream(30);
-  // create a recorder fed with our canvas' stream
-  recorder = new MediaRecorder(cStream);
-  // start it
+  closeFunction = closeHandler;
+  store.dispatch({ type: "HIDE_WHILE_EXPORT" });
+  const canvas = createCanvas(canvasDimension, canvasDimension)
+  ctx = canvas.getContext('2d')
+  const encoder = new GIFEncoder(canvasDimension, canvasDimension)
+  const delay = store.getState().export.fps;
 
-  recorder.start();
-  anim();
-  // save the chunks
-  recorder.ondataavailable = saveChunks;
+  encoder.setDelay(1000 / delay);
+  encoder.setRepeat(0)
+  encoder.start();
+  allFrames.forEach(item => {
+    drawFrame(item);
+    encoder.addFrame(ctx);
 
-  recorder.onstop = exportStream;
-  // change our button's function
-}
-// async function updateCanvas() {
-//   console.log("updated");
-// }
-
-function saveChunks(e) {
-  // console.log(e.data);
-  // updateCanvas();
-  chunks.push(e.data);
-}
-
-function stopRecording() {
-  recorder.stop();
-  store.dispatch({ type: "SHOW_EXPORT_FINISHED" });
-  console.log("stopped");
-  closeFunction();
-}
-
-function exportStream(e) {
-  // combine all our chunks in one blob
-  var blob = new Blob(chunks);
-  // do something with this blob
-  var vidURL = URL.createObjectURL(blob);
-  console.log(blob);
-  var vid = document.createElement("video");
-  vid.controls = true;
-  vid.src = vidURL;
-  vid.onended = function () {
-    URL.revokeObjectURL(vidURL);
-  };
-  //!----------------------------------------------------------
-  // const image = canvasRef
-  //   .toDataURL("image/png")
-  //   .replace("image/png", "image/octet-stream"); // here is the most important part because if you dont replace you will get a DOM 18 exception.
+  })
+  encoder.finish();
+  console.log("WORKS TILL HERE");
+  const buff = encoder.out.data
+  const blob = new Blob([Buffer.from(buff)], {
+    type: "gif"
+  })
   const anchor = document.createElement("a");
-  anchor.href = vidURL;
-  anchor.download = "vid.mp4";
+  anchor.href = URL.createObjectURL(blob);
+  anchor.download = "vid.gif";
   anchor.click();
-  // document.body.insertBefore(vid, canvas);
-}
+  if (closeFunction) {
 
-// var x = 0;
-// var ctx = store.getState().canvas.canfasRef;
-// let record = true;
-let nc = -1;
-var anim = function () {
-  console.log("LEN: " + allFrames.length);
-  const to = setInterval(() => {
-    nc++;
-    if (nc === allFrames.length) {
-      clearInterval(to);
-      stopRecording();
-      return;
-    }
-    console.log("here", nc);
-    grid.drawFrame(allFrames[nc]);
-    if (nc === allFrames.length - 1) {
-      clearInterval(to);
-      stopRecording();
-      return;
-    }
-  }, 1000);
-};
+    closeFunction();
+  }
+}

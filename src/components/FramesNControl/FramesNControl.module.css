@@ -16,6 +16,7 @@
   /* height: 134px; */
 
   display: flex;
+  gap: 1rem;
   /* background-color: #00356f; */
   background-color: #232323;
   justify-content: flex-start;
@@ -94,4 +95,11 @@
 .controlFrameIcon:hover {
   border-radius: 4px;
   background-color: rgba(255, 255, 255, 0.1);
+}
+.disabled{
+  stroke: #3b3b3f;
+  cursor: not-allowed;
+}
+.disabled:hover{
+  background-color: #232323;
 }

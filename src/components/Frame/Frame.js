@@ -3,7 +3,6 @@ import styles from "./Frame.module.css";
 import tempImage from "../../assets/temp.png";
 import { getCanvasGrid, getCanvasImage } from "../../utils/frame";
 function Frame({ image, grid, index }) {
-  // console.log(image);
   const gridObj = useSelector((state) => state.canvas.grid);
   const canvasRef = useSelector((state) => state.canvas.canvasRef);
   const currIndex = useSelector((state) => state.frames.currFrame);
@@ -13,14 +12,6 @@ function Frame({ image, grid, index }) {
     if (index === 0) {
       dispatch({ type: "DISABLE_ONION_SCREEN" });
     }
-    // console.log(currIndex, index);
-    // dispatch({
-    //   type: "FRAME_UPDATE",
-    //   index: currIndex,
-    //   grid: getCanvasGrid(),
-    //   image: null,
-    // });
-    // dispatch({ type: "ADD_CURR_FRAME", index: index });
     dispatch({
       type: "FRAME_UPDATE_ADD_CURR_FRAME",
       index: currIndex,
@@ -28,18 +19,21 @@ function Frame({ image, grid, index }) {
       image: getCanvasImage(),
       newIndex: index,
     });
-    console.log(grid[0]);
+    // console.log(grid[0]);
     gridObj.addFrame(grid);
   };
   return (
     <li
-      className={`${styles.frame} ${
-        currIndex === index ? styles.thisFrame : ""
-      }`}
+      className={`${styles.frame} `}
       onClick={frameClickHandler}
     >
-      <img src={image ? image : tempImage} alt={index} />
-      <p className={styles.index}>{index+1}</p>
+      <div className={styles.imageWrapper} >
+        <div className={styles.image} style={{ boxShadow: image }}>
+
+        </div>
+
+        {currIndex === index && <div className={styles.index}></div>
+        }      </div>
     </li>
   );
 }
