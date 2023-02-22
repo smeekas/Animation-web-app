@@ -1,5 +1,4 @@
 .frames {
-  /* background-color: #00356f; */
   background-color: #232323;
   border-top: 2px solid #1c1c1c;
   position: fixed;
@@ -12,50 +11,33 @@
   margin: 0;
 
   padding-top: 8px;
-  /* border: 1px solid skyblue; */
-  /* height: 134px; */
 
   display: flex;
   gap: 1rem;
-  /* background-color: #00356f; */
   background-color: #232323;
   justify-content: flex-start;
   align-items: baseline;
-  /* flex-wrap: wrap; */
-  /* overflow-x: scroll;
-  position: absolute; */
   overflow-x: auto;
   overflow-y: hidden;
 }
-/* .childAllFrames {s
-  display: flex;
-} */
+
 .frameAndControl {
   display: flex;
-  /* height: 134px; */
   flex-direction: column;
   max-width: 100%;
 }
 .frameControlButtons {
   background-color: #3b3b3f;
   display: flex;
-  /* position: fixed; */
-  /* bottom: 0; */
-  /* padding: 0.2rem 0; */
 }
 .frameControlButton {
   margin: 0;
   background-color: #3b3b3f;
   color: white;
-  /* padding-left: 0.8rem;
-  padding-right: 0.8rem; */
-  /* margin: 0.2rem; */
-  /* padding-top: 1rem; */
   padding: 0.5rem 0.8rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  /* vertical-align: middle; */
   font-size: 1rem;
   outline: none;
 }
@@ -71,20 +53,17 @@
   padding-right: 0.5rem;
 }
 .controlFrame {
-  /* background-color: #005a96; */
   background-color: #232323;
   display: flex;
   color: white;
   font-size: 0.9rem;
   align-items: center;
-  /* border: 1px solid green; */
   padding: 0.3rem;
 }
 .controlFrameIcon {
   font-size: 1.3rem;
 }
 .controlFrame .controlFrameIcon {
-  /* border: 1px solid red; */
   display: flex;
   justify-content: center;
   padding: 0.3rem 0.4rem;

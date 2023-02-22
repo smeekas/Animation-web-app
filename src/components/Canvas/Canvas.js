@@ -3,8 +3,9 @@ import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./Canvas.module.css";
 import grid from "../../utils/canvas";
-import { getCanvasAsImage, getCanvasGrid, getCanvasImage } from "../../utils/frame";
+import { getCanvasAsImage, getCanvasGrid } from "../../utils/frame";
 import { canvasDimension } from "../../variables";
+import { getLocalStorageData } from "../../utils/localstorage";
 function Canvas() {
   const canvasRef = useRef();
   const dispatch = useDispatch();
@@ -16,8 +17,16 @@ function Canvas() {
     imageOverCanvas = getCanvasAsImage(frameObj.frames[frameObj.currFrame - 1].grid);
     imageClassName = styles.onionImage;
   }
-  const videoSrc = useSelector((state) => state.export.videoBlob);
   const allControl = useSelector((state) => state.canvas);
+  useEffect(() => {
+    const data = getLocalStorageData();
+    if (!data) {
+      return
+    }
+    setTimeout(() => {
+      grid.addFrame(data.frames[data.currFrame].grid)
+    }, 50)
+  }, [])
   useEffect(() => {
     dispatch({
       type: "CANVAS_INIT",
@@ -155,12 +164,12 @@ function Canvas() {
             }
           }}
           onMouseUp={(e) => {
-            dispatch({
-              type: "CURRENT_FRAME_UPDATE", payload: {
-                grid: getCanvasGrid(),
-                image: getCanvasImage(),
-              }
-            })
+            // dispatch({
+            //   type: "CURRENT_FRAME_UPDATE", payload: {
+            //     grid: getCanvasGrid(),
+            //     image: getCanvasImage(),
+            //   }
+            // })
             if (allControl.line) {
               grid.finishLine(
                 e.clientX,

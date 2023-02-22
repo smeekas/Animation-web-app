@@ -1,12 +1,9 @@
 import Button from "../Button/Button";
 import styles from "./Toolbar.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { startRecord } from "../../utils/export";
 import Modal from "../Modal/Modal";
-import { createCanvas } from "canvas";
 import { FaRedo, FaUndo } from "react-icons/fa";
 import { useState } from "react";
-import { canvasDimension } from "../../variables";
 import { getCanvasAsImage } from "../../utils/frame";
 function Toolbar() {
   const [showModal, setShowModal] = useState(false);
@@ -27,8 +24,6 @@ function Toolbar() {
       anchor.download = "img.png";
       anchor.click();
     }, 1000);
-    // for (let frame in allFrames) {
-    // }
   };
   const downloadThisFrame = () => {
     const image = canvasRef
@@ -41,20 +36,15 @@ function Toolbar() {
   };
   const exportHandler = () => {
     setShowModal(true);
-    // startRecord();
   };
   const undoHandler = () => {
     const historyIndex = historyObj.history[currIndex].curr;
-    // console.log(historyIndex);
-    // console.log(historyObj.history[currIndex].grid[historyIndex]);
     gridObj.addFrame(historyObj.history[currIndex].grid[historyIndex]);
     dispatch({ type: "UNDO_POP", index: currIndex });
   };
   const redoHandler = () => {
     const historyIndex = historyObj.history[currIndex].curr;
     console.log(historyIndex, historyObj.history[currIndex].grid.length);
-    // console.log(historyIndex);
-    // console.log(historyObj.history[currIndex].grid[historyIndex]);
     gridObj.addFrame(historyObj.history[currIndex].grid[historyIndex + 2]);
     dispatch({ type: "REDO_PUSH", index: currIndex });
   };
@@ -66,7 +56,6 @@ function Toolbar() {
   }
   return (
     <div className={styles.toolbar}>
-      {/* {showModal && <Modal />} */}
       {showModal && <Modal closeModal={setShowModal} />}
       <Button onClick={newProjectHandler} className={styles.tool}>
         New Project

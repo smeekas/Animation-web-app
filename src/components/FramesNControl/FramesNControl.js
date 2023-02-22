@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import Frame from "../Frame/Frame";
-import { copyGrid, getBlankCanvasImage, getCanvasGrid, getCanvasImage } from "../../utils/frame";
+import { copyGrid, getCanvasGrid, getCanvasImage } from "../../utils/frame";
 import styles from "./FramesNControl.module.css";
 import Button from "../Button/Button";
 import { useState } from "react";
@@ -19,17 +19,12 @@ function FramesNControl() {
   const [frameDisplay, setFrameDisplay] = useState(true);
   const allFrames = useSelector((state) => state.frames.frames);
   const currIndex = useSelector((state) => state.frames.currFrame);
-  // const historyObj = useSelector((state) => state.undo);
   const showScreen = useSelector((state) => state.onion.showScreen);
   const gridObj = useSelector((state) => state.canvas.grid);
   const dispatch = useDispatch();
   const frameAddHandler = async () => {
     const gridArr = getCanvasGrid();
     const image = await getCanvasImage();
-    //TODO: add blank frame first, then change  as we click new frame
-    //TODO: handle test cases for clicking oldframe and exporting
-    //TODO: feature: download all images, undo, shift to circle, preview, preserve state,  right click to erase
-    // console.log(image);
     dispatch({
       type: "FRAME_ADD",
       payload: { image: image, grid: gridArr, currIndex: currIndex },
@@ -41,14 +36,12 @@ function FramesNControl() {
       return;
     }
     if (currIndex === 0) {
-      //TODO
       gridObj.addFrame(allFrames[1].grid);
-      // console.log(currIndex);
+
       dispatch({ type: "DELETE_FRAME" });
-      // console.log(currIndex);
+
       return;
     } else {
-      // console.log("remove");
       gridObj.addFrame(allFrames[currIndex - 1].grid);
       dispatch({ type: "DELETE_FRAME" });
     }
@@ -69,17 +62,12 @@ function FramesNControl() {
     dispatch({ type: "MOVE_FRAME_RIGHT" });
   };
   const copyPreviousFrame = () => {
-    // dispatch({ type: "COPY_PREV_FRAME" });
-
-    // console.log(allFrames[currIndex - 1].grid[0]);
-
     gridObj.copyFrame(copyGrid(allFrames[currIndex - 1].grid));
   };
   const onionSkin = () => {
     dispatch({ type: "TOGGLE" });
   };
 
-  // console.log(historyObj.history[currIndex]);
   return (
     <div className={styles.frames}>
       <div
@@ -99,7 +87,6 @@ function FramesNControl() {
         </Button>
         <Button
           className={styles.frameControlButton}
-          // disabled={currIndex !== allFrames.length - 1}
           onClick={frameAddHandler}
         >
           <FiPlus className={styles.icon} /> Add Frame
@@ -125,9 +112,6 @@ function FramesNControl() {
         </Button>
       </div>
 
-      {
-        // TODO: controls remove frame  and may be move frame
-      }
       <motion.div
         onAnimationEnd={() => setFrameDisplay(false)}
         animate={

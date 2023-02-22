@@ -8,7 +8,6 @@ function ControlPickerMirror() {
   const [whichColor, setWhichColor] = useState(null);
   const [showTooltip, setShowTooltip] = useState(true);
   const colorHandler = (e) => {
-    // console.log(e.target.value);
     dispatch({ type: "COLOR", colorVal: e.target.value, color: whichColor });
   };
   const color = useSelector((state) => state.canvas.color);
@@ -27,10 +26,8 @@ function ControlPickerMirror() {
 
         setTimeout(() => setShowTooltip(true), 0);
       }}
-      //----------------------------------------------
     >
       <section
-        // style={{ backgroundColor: allControl.color }}
         className={styles.colorPicker}
       >
         <input

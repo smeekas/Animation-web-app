@@ -1,5 +1,4 @@
 .canvas {
-  /* background-color: blueviolet; */
   margin: 0 auto;
 }
 .canvasDiv {
@@ -7,26 +6,16 @@
   display: flex;
   margin-top: 4rem;
   justify-content: center;
-  /* align-items: center; */
-  /* background-color: #142850; */
   background-color: #232323;
 }
 canvas {
-  /* width: 250px;
-    height: 250px; */
-  /* box-sizing: border-box; */
   background-color: white;
-  /* background-image: url('../../assets/colorWheel.png'); */
-
   z-index: 111;
   padding: 0;
   margin: 0;
   border: 1px solid black;
 }
 
-.op {
-  /* border: 1px solid skyblue; */
-}
 .onionImage {
   position: absolute;
   opacity: 0.2;

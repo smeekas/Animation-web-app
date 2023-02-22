@@ -1,7 +1,6 @@
 .frame {
   display: flex;
   flex-direction: column;
-  /* margin-right: rem; */
   position: relative;
   min-width: 90px;
   min-height: 90px;

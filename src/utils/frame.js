@@ -1,19 +1,10 @@
 import store from "../store";
-import { List } from "immutable";
 import { getImageData } from 'box-shadow-pixels'
-import { Children } from "react";
 import { canvasDimension, cellDimension, dimension } from "../variables";
 export function getCanvasImage() {
-  // const image = store
-  //   .getState()
-  //   .canvas.canvasRef.toDataURL("image/png")
-  const grid = getCanvasGrid();
-  // const newGrid=List();
-  // grid.f.forEach((item)=>{
-  //     newGrid.push(item)
-  // })
 
-  // console.log(newGrid);
+  const grid = getCanvasGrid();
+
   const cs = getImageData(grid.flat(),
     {
       c: dimension,
@@ -21,7 +12,7 @@ export function getCanvasImage() {
       format: 'string'
     }
   )
-  // console.log(cs);
+
   return cs;
 }
 export function getCanvasAsImage(grid) {

@@ -28,11 +28,9 @@ class Grid {
   initLine(cX, cY, left, top) {
     [this.lineY, this.lineX] = this.getPixel(cX, cY, left, top);
     this.prevColorOfLine2 = [];
-    // console.log(this.lineX, this.lineY);
   }
   drawLine(cX, cY, left, top) {
     let [endY, endX] = this.getPixel(cX, cY, left, top);
-    // console.log(endX, endY);
     this.lineAlgorithm(this.lineX, this.lineY, endX, endY);
   }
   finishLine(cX, cY, left, top) {
@@ -42,8 +40,6 @@ class Grid {
     this.lineY = null;
     this.prevColorOfLine = [];
     this.prevColorOfLine2 = [];
-
-    // console.log("UP");
   }
   lineAlgorithm(x1, y1, x2, y2) {
     let pixelarr = [];
@@ -68,11 +64,9 @@ class Grid {
         y = y2;
         xe = x1;
       }
-      // this.grid[x][y] = "black";
       pixelarr.push({ x: x, y: y });
 
-      // this.drawGrid();
-      //pixel(x, y); // Draw first pixel        // Rasterize the line
+     
       for (i = 0; x < xe; i++) {
         x = x + 1; // Deal with octants...
         if (px < 0) {
@@ -86,11 +80,9 @@ class Grid {
           px = px + 2 * (dy1 - dx1);
         } // Draw pixel from line span at
         // currently rasterized position
-        // this.grid[x][y] = "black";
+      
         pixelarr.push({ x: x, y: y });
 
-        // this.drawGrid();
-        // pixel(x, y);
       }
     } else {
       // The line is Y-axis dominant        // Line is drawn bottom to top
@@ -104,11 +96,9 @@ class Grid {
         y = y2;
         ye = y1;
       }
-      // this.grid[x][y] = "black";
+   
       pixelarr.push({ x: x, y: y });
 
-      // this.drawGrid();
-      //  pixel(x, y); // Draw first pixel        // Rasterize the line
       for (i = 0; y < ye; i++) {
         y = y + 1; // Deal with octants...
         if (py <= 0) {
@@ -122,11 +112,8 @@ class Grid {
           py = py + 2 * (dx1 - dy1);
         } // Draw pixel from line span at
         // currently rasterized position
-        // pixel(x, y);
-        // this.grid[x][y] = "black";
+      
         pixelarr.push({ x: x, y: y });
-
-        // this.drawGrid();
       }
     }
     this.colorLineGrid(pixelarr);
@@ -148,13 +135,11 @@ class Grid {
     this.prevColorOfLine.forEach((item) => {
       this.grid[item.x][item.y] = item.color;
     });
-    // //!
     if (store.getState().canvas.mirror) {
       this.prevColorOfLine2.forEach((item) => {
         this.grid[item.x][item.y] = item.color;
       });
     }
-    // //!
     //color new
     this.prevColorOfLine = [];
     this.prevColorOfLine2 = [];
@@ -178,41 +163,17 @@ class Grid {
             color: this.grid[item.x][this.columns - 1 - item.y],
           });
         }
-      }
-      // if (item.y === this.columns - 1 - item.y) {
-
+      }   
       this.grid[item.x][item.y] = this.getColor();
       if (store.getState().canvas.mirror) {
         if (item.y !== this.columns - 1 - item.y) {
           this.grid[item.x][this.columns - 1 - item.y] = this.getColor();
         }
       }
-      // this.grid[item.x][item.y] = color;
     });
-
     this.drawGrid();
     //add new to prev
   }
-  // colorLineGrid(arr, color) {
-  //   //color prev
-  //   this.prevColorOfLine.forEach((item) => {
-  //     this.grid[item.x][item.y] = item.color;
-  //   });
-
-  //   //color new
-  //   this.prevColorOfLine = [];
-  //   arr.forEach((item) => {
-  //     this.prevColorOfLine.push({
-  //       x: item.x,
-  //       y: item.y,
-  //       color: this.grid[item.x][item.y],
-  //     });
-  //     // this.grid[item.x][item.y] = this.getColor();
-  //     this.grid[item.x][item.y] = color;
-  //   });
-  //   this.drawGrid();
-  //   //add new to prev
-  // }
   //!LINE FINISHED
   //!RECTANGLE
   initRect(cX, cY, left, top) {
@@ -220,23 +181,10 @@ class Grid {
   }
   drawRect(cX, cY, left, top) {
     let [endY, endX] = this.getPixel(cX, cY, left, top);
-    let cordX3 = endX,
-      cordY3 = this.rectY;
-
     let cordX4 = this.rectX,
       cordY4 = endY;
     this.rectArr = [];
-    // this.rectArr.push({ x: this.rectX, y: this.rectY });
-    // this.rectArr.push({ x: endX, y: endY });
-    // this.rectArr.push({ x: cordX3, y: cordY3 });
-    // this.rectArr.push({ x: cordX4, y: cordY4 });
-    // console.log(this.rectX, this.rectY, "\n");
-    // console.log(cordX3, cordY3, "\n");
-    // console.log(endX, endY, "\n");
-    // console.log(cordX4, cordY4, "\n");
-    // console.log("---------------");
     if (this.rectX <= endX && this.rectY <= endY) {
-      // console.log(1);
       for (let i = this.rectX; i <= endX; i++) {
         this.rectArr.push({
           x: i,
@@ -247,7 +195,6 @@ class Grid {
           y: cordY4,
         });
       }
-      // console.log(this.rectArr)
       for (let i = this.rectY + 1; i < endY; i++) {
         this.rectArr.push({
           x: this.rectX,
@@ -258,9 +205,9 @@ class Grid {
           y: i,
         });
       }
-      // console.log(this.rectArr);
+ 
     } else if (this.rectX <= endX && this.rectY >= endY) {
-      // console.log("2");
+     
       for (let i = cordX4; i <= endX; i++) {
         this.rectArr.push({
           x: i,
@@ -282,7 +229,7 @@ class Grid {
         });
       }
     } else if (this.rectX > endX && this.rectY < endY) {
-      // console.log("3");
+     
       for (let i = endX; i <= this.rectX; i++) {
         //!here is problem
         this.rectArr.push({
@@ -305,8 +252,7 @@ class Grid {
         });
       }
     } else {
-      // console.log("4");
-
+     
       for (let i = endX; i <= this.rectX; i++) {
         //!here is problem
         this.rectArr.push({
@@ -332,7 +278,6 @@ class Grid {
     this.colorCircleGrid(this.rectArr);
   }
   finishRect(cX, cY, left, top) {
-    // let [endX, endY] = this.getPixel(cX, cY, left, top);
     this.drawRect(cX, cY, left, top);
     this.rectX = this.rectY = null;
     this.prevColorOfCircle = [];
@@ -349,7 +294,6 @@ class Grid {
 
   initCircle(cX, cY, left, top) {
     [this.circleX, this.circleY] = this.getPixel(cX, cY, left, top);
-    // console.log(this.circleX, this.circleY);
   }
   getRadiusAndCenter(endX, endY) {
     const rx = Math.abs(this.circleX - endX);
@@ -359,11 +303,7 @@ class Grid {
     const cy = Math.floor(min / 2) + this.circleY;
     return [cx, cy, Math.floor(min / 2)];
   }
-  // drawEllipse(cX, cY, left, top) {
-  //   let [endX, endY] = this.getPixel(cX, cY, left, top);
-  //   this.midptellipse(...this.getEllipseWidthAndHeightAndCenter(endX, endY));
-  //   // console.log(endX, endY);
-  // }
+
   drawCircle(cX, cY, left, top) {
     let [endX, endY] = this.getPixel(cX, cY, left, top);
     this.circleAlgorithm(...this.getRadiusAndCenter(endX, endY));
@@ -371,7 +311,7 @@ class Grid {
 
   circleAlgorithm(x0, y0, radius) {
     let pixelArr = [];
-    // console.log(x0,y0,radius)
+   
     var x = radius;
     var y = 0;
     var radiusError = 1 - x;
@@ -398,8 +338,6 @@ class Grid {
   }
 
   colorCircleGrid(arr) {
-    //TODO either green or red
-    //* arr = arr.filter((item, pos) => a.indexOf(item) == pos);
     this.prevColorOfCircle.forEach((item) => {
       this.grid[item.x][item.y] = item.color;
     });
@@ -418,7 +356,7 @@ class Grid {
           color: this.grid[item.x][item.y],
         });
       }
-      //* this.grid[item.x][item.y] = this.getColor();
+   
     });
     arr.forEach((item) => {
       if (
@@ -438,8 +376,6 @@ class Grid {
     this.circleX = null;
     this.circleY = null;
     this.prevColorOfCircle = [];
-
-    // console.log("UP");
   }
   cancelCircle() {
     this.prevColorOfCircle.forEach((item) => {
@@ -458,7 +394,6 @@ class Grid {
   getWidthHeightAndCenter(endX, endY) {
     const rx = Math.abs(this.ellipseX - endX);
     const ry = Math.abs(this.ellipseY - endY);
-    // const min = rx > ry ? ry : rx;
     const cx = Math.floor(rx / 2) + this.ellipseX;
     const cy = Math.floor(ry / 2) + this.ellipseY;
     return [rx, ry, cx, cy];
@@ -466,7 +401,6 @@ class Grid {
 
   drawEllipse(cX, cY, left, top) {
     let [endX, endY] = this.getPixel(cX, cY, left, top);
-    // console.log(this.getWidthHeightAndCenter(endX, endY));
     this.ellipseAlgorithm(...this.getWidthHeightAndCenter(endX, endY));
   }
 
@@ -534,7 +468,6 @@ class Grid {
         d2 = d2 + dx - dy + rx * rx;
       }
     }
-    // console.log(pixelArr);
     this.colorCircleGrid(pixelArr);
   }
   finishEllipse(cX, cY, left, top) {
@@ -543,8 +476,6 @@ class Grid {
     this.ellipseX = null;
     this.ellipseY = null;
     this.prevColorOfCircle = [];
-
-    // console.log("UP");
   }
   cancelEllipse() {
     this.prevColorOfCircle.forEach((item) => {
@@ -559,12 +490,10 @@ class Grid {
     const clientY = cY - top;
     let r = Math.floor(clientY / this.cellW);
     let c = Math.floor(clientX / this.cellH);
-    // return [r, c];
     return [c, r];
   }
   addCanvas(c) {
     this.c = c;
-    // this.drawBlank();
   }
   getReduxState() {
     return store.getState();
@@ -578,7 +507,6 @@ class Grid {
     this.drawFrame(grid);
   }
   drawFrame(grid) {
-    // console.log(grid[0]);
     this.c.clearRect(0, 0, CANVASW, CANVASH);
     let i = 0,
       j = 0;
@@ -606,7 +534,6 @@ class Grid {
       j = 0;
     for (i = 0; i < this.rows; i++) {
       for (j = 0; j < this.columns; j++) {
-        // console.log("HERE");
         this.grid[i][j] = "#ffffff";
         this.c.fillStyle = "#ffffff";
         this.c.fillRect(j * this.cellW, i * this.cellH, this.cellW, this.cellH);
@@ -633,7 +560,6 @@ class Grid {
     //!MIRROR
     if (store.getState().canvas.mirror) {
       const mirrorC = this.columns - c - 1;
-      const mirrorR = this.rows - r - 1;
       this.mirrorIt(r, mirrorC, this.getColor());
     }
     this.drawGrid();
@@ -667,16 +593,14 @@ class Grid {
   mirrorIt(r, c, color) {
     this.grid[r][c] = color;
   }
-  //TODO NOT WORKING move grid functionality
   initMoveGrid(cX, cY, left, top) {
     [this.moveX, this.moveY] = this.getPixel(cX, cY, left, top);
     this.newMoveArr = [];
-    // console.log(this.moveX,this.moveY);
+  
   }
   moveGrid(cX, cY, left, top) {
     const [endX, endY] = this.getPixel(cX, cY, left, top);
     this.newMoveArr = [];
-    // console.log(endX, endY);
     for (let i = 0; i < this.rows; i++) {
       this.newMoveArr.push(new Array(this.columns).fill("#ffffff"));
     }
@@ -684,7 +608,6 @@ class Grid {
     //! X start
     if (this.moveX > endX) {
       const diffX = this.moveX - endX;
-      // console.log(diffX);
       for (let k = 0; k < this.rows; k++) {
         let j = 0;
         let l;
@@ -706,23 +629,17 @@ class Grid {
     //! X ends
 
     this.newNewMoveArr = [];
-    // console.log(endX, endY);
     for (let i = 0; i < this.rows; i++) {
       this.newNewMoveArr.push(new Array(this.columns).fill("#ffffff"));
     }
     //! y starts
     if (this.moveY > endY) {
-      // console.log("here");
-      // console.log(this.moveY, " ", endY);
-      // return;
       const diffY = this.moveY - endY;
       let j = 0;
-      // console.log(diffY);
       for (let i = diffY; i < this.rows; i++) {
         this.newNewMoveArr[j] = this.newMoveArr[i];
         j++;
       }
-      // console.log(this.newMoveArr);s
     } else if (this.moveY <= endY) {
       const diffY = endY - this.moveY;
       let j = 0;
@@ -734,7 +651,6 @@ class Grid {
     this.drawFrame(this.newNewMoveArr);
   }
   finishMoveGrid(cX, cY, left, top) {
-    // const [endX, endY] = this.getPixel(cX, cY, left, top);
     this.addFrame(this.newNewMoveArr);
   }
   //TODO NOT WORKING
@@ -767,9 +683,6 @@ class Grid {
     }
     return;
   }
-  // setColor(e) {
-  //   this.color = e.target.value;
-  // }
   getGrid() {
     return this.grid;
   }

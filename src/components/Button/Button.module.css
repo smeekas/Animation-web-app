@@ -1,18 +1,13 @@
 .button {
-  /* color: white; */
   border: 0;
   padding: 0.5rem 0.5rem;
   cursor: pointer;
-  margin: 0.5rem;
-  background-color: #aedbce;
+
 }
 .button:hover {
-  background-color: #d3ebcd;
+  background-color: #0099ff;
 }
 .button:disabled {
   color: gray;
   cursor: not-allowed;
-}
-.button:disabled:hover {
-  background-color: #aedbce;
 }

@@ -1,15 +1,12 @@
-import Tippy from "@tippyjs/react";
 import { useState } from "react";
 import { forwardRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import ReactTooltip from "react-tooltip";
 import styles from "./Control.module.css";
 const Control = forwardRef(
   ({ tooltipName, imgSrc, imgAlt, onClick, checked, onChange, type }, ref) => {
     const [showTooltip, setShowTooltip] = useState(true);
-    const tooltip = useSelector((state) => state.tooltip);
-    // console.log(tooltip.x);
-    const dispatch = useDispatch();
+    // const tooltip = useSelector((state) => state.tooltip);
+    // const dispatch = useDispatch();
 
     return (
       <section
@@ -17,7 +14,6 @@ const Control = forwardRef(
         data-tip={tooltipName}
         data-iscapture="true"
         className={styles.control}
-        //----------------------------------------------
         // I have to do this because React-tooltip is not campatible with react 18
         onMouseEnter={() => setShowTooltip(true)}
         onMouseLeave={() => {
@@ -25,26 +21,16 @@ const Control = forwardRef(
 
           setTimeout(() => setShowTooltip(true), 0);
         }}
-        //----------------------------------------------
       >
         {imgSrc && (
           <img
-            className={`${styles.drawControlImage} ${
-              checked && styles.checked
-            }`}
+            className={`${styles.drawControlImage} ${checked && styles.checked
+              }`}
             alt={imgAlt}
             src={imgSrc}
             onClick={onClick}
           />
         )}
-        {/* {tooltip.name === tooltipName && (
-          <div
-            style={{ left: `${tooltip.x}px`, top: `${tooltip.y}px` }}
-            className={styles.tooltip}
-          >
-            {tooltip.x} {tooltip.y}
-          </div>
-        )} */}
         <input
           ref={ref}
           style={{ display: "none" }}

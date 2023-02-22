@@ -54,7 +54,7 @@ export const frameReducer = (state = initialState, action) => {
     }
     case "FRAME_UPDATE_ADD_CURR_FRAME": {
       const newArr = [...state.frames];
-      newArr[action.index] = { grid: action.grid, image: action.image };
+      newArr[state.currFrame] = { grid: action.grid, image: action.image };
       setLocalStorageData({
         frames: newArr,
         currFrame: action.newIndex,

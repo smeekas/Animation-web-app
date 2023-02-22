@@ -4,7 +4,7 @@ function Button(props) {
     <button
       disabled={props.disabled ? props.disabled : false}
       className={
-        props.className ? `${props.className} ${styles.button}` : styles.button
+        props.className ? ` ${styles.button} ${props.className}` : styles.button
       }
       onClick={props.onClick}
     >
