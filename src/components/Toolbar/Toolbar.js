@@ -55,7 +55,11 @@ function Toolbar() {
     gridObj.drawBlank()
   }
   return (
-    <div className={styles.toolbar}>
+  
+
+    <div className={styles.toolbarContainer}>
+      <div   className={styles.toolbar}>
+
       {showModal && <Modal closeModal={setShowModal} />}
       <Button onClick={newProjectHandler} className={styles.tool}>
         New Project
@@ -74,11 +78,11 @@ function Toolbar() {
         className={styles.tool}
         disabled={
           historyObj.history[currIndex]
-            ? !historyObj.history[currIndex].canUndo
-            : true
+          ? !historyObj.history[currIndex].canUndo
+          : true
         }
         onClick={undoHandler}
-      >
+        >
         <FaUndo className={styles.toolIcon} />
         Undo
       </Button>
@@ -86,14 +90,17 @@ function Toolbar() {
         className={styles.tool}
         disabled={
           historyObj.history[currIndex]
-            ? !historyObj.history[currIndex].canRedo
-            : true
+          ? !historyObj.history[currIndex].canRedo
+          : true
         }
         onClick={redoHandler}
-      >
+        >
         Redo <FaRedo className={styles.toolIcon} />
       </Button>
+          </div>
+          <a href="https://www.buymeacoffee.com/smeekas" target="_blank" rel="noreferrer"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" className={styles.buyCoffee} /></a>
     </div>
+        
   );
 }
 export default Toolbar;

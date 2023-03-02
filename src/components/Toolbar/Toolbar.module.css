@@ -1,11 +1,18 @@
+.toolbarContainer{
+  width:100%;
+  display:flex;
+  justify-content:space-between;
+  background-color: #3b3b3f;
+  border-bottom: 2px solid  #1c1c1c;
+}
 .toolbar {
   display: flex;
+  align-self: flex-start;
   flex-direction: row;
   justify-content: flex-start;
   background-color: #3b3b3f;
   color: white;
   position: relative;
-  border-bottom: 2px solid  #1c1c1c;
 }
 .menu {
   background-color: white;
@@ -34,4 +41,9 @@
 }
 .toolIcon {
   margin: 0 0.5rem;
+}
+.buyCoffee{
+  width: 120px;
+  height: 30px;
+  padding-right: 10px;
 }
