@@ -10,7 +10,8 @@ section {
   background: #3b3b3f;
 }
 
-.drawControlImage:hover {
+.drawControlImage:hover,
+.drawControlImage:focus {
   background-color: rgba(151, 151, 151, 0.5);
   border-radius: 4px;
 }
