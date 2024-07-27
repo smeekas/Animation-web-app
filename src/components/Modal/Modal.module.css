@@ -27,10 +27,14 @@
 }
 .header > section {
   padding-right: 8px;
+
   cursor: pointer;
 }
 .header > section:hover {
   color: gray;
+}
+.header > section:focus {
+  outline: auto;
 }
 .FPS {
   display: flex;
@@ -59,7 +63,6 @@
   /* Full-width */
   height: 10px; /* Specified height */
   background: white; /* Grey background */
-  outline: none; /* Remove outline */
 }
 
 /* Mouse-over effects */
@@ -67,6 +70,9 @@
   background: #ebebeb;
 }
 
+.slider:focus {
+  outline: auto;
+}
 /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none; /* Override default look */
@@ -76,10 +82,12 @@
   background: #036fb4; /* Green background */
   cursor: pointer; /* Cursor on hover */
 }
-.slider::-webkit-slider-thumb:hover {
+.slider::-webkit-slider-thumb:hover,
+.slider::-webkit-slider-thumb:focus {
   background: #009dff;
 }
-.slider::-moz-range-thumb:hover {
+.slider::-moz-range-thumb:hover,
+.slider::-moz-range-thumb:focus {
   background: #009dff;
 }
 .slider::-moz-range-thumb {
@@ -89,17 +97,15 @@
   cursor: pointer; /* Cursor on hover */
 }
 
-
-.btn{
+.btn {
   margin-top: 2rem;
   background-color: #036fb4;
   border: none;
-  outline: none;
   padding: 0.5rem 1.5rem;
   border-radius: 16px;
   color: white;
   cursor: pointer;
 }
-.btn:hover{
+.btn:hover {
   background-color: #009dff;
 }

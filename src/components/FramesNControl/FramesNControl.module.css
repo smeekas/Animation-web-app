@@ -39,7 +39,6 @@
   justify-content: center;
   align-items: center;
   font-size: 1rem;
-  outline: none;
 }
 .frameControlButton:hover {
   background-color: #0099ff;
@@ -75,10 +74,10 @@
   border-radius: 4px;
   background-color: rgba(255, 255, 255, 0.1);
 }
-.disabled{
+.disabled {
   stroke: #3b3b3f;
   cursor: not-allowed;
 }
-.disabled:hover{
+.disabled:hover {
   background-color: #232323;
 }

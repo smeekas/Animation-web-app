@@ -10,24 +10,30 @@ const Control = forwardRef(
 
     return (
       <section
-        data-for={tooltipName}
-        data-tip={tooltipName}
-        data-iscapture="true"
         className={styles.control}
         // I have to do this because React-tooltip is not campatible with react 18
-        onMouseEnter={() => setShowTooltip(true)}
-        onMouseLeave={() => {
-          setShowTooltip(false);
-
-          setTimeout(() => setShowTooltip(true), 0);
-        }}
       >
         {imgSrc && (
           <img
-            className={`${styles.drawControlImage} ${checked && styles.checked
-              }`}
+            className={`${styles.drawControlImage} ${
+              checked && styles.checked
+            }`}
+            data-for={tooltipName}
+            data-tip={tooltipName}
+            data-iscapture="true"
+            role="checkbox"
+            aria-checked={checked}
+            tabIndex={0}
+            onBlur={() => setShowTooltip(false)}
+            onMouseEnter={() => setShowTooltip(true)}
+            onMouseLeave={() => {
+              setShowTooltip(false);
+
+              setTimeout(() => setShowTooltip(true), 0);
+            }}
             alt={imgAlt}
             src={imgSrc}
+            onKeyDown={(e) => e.key === "Enter" && onClick()}
             onClick={onClick}
           />
         )}

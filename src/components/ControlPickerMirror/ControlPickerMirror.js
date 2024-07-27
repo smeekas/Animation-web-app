@@ -16,6 +16,14 @@ function ControlPickerMirror() {
   const canvasstate = useSelector((state) => state.canvas);
   const mirrorClickable =
     canvasstate.pencil || canvasstate.eraser || canvasstate.line;
+  const onPrimaryClick = () => {
+    setWhichColor("primary");
+    colorRef.current.click();
+  };
+  const onSecondaryClick = () => {
+    setWhichColor("secondary");
+    colorRef.current.click();
+  };
   return (
     <section
       className={styles.mainSection}
@@ -27,9 +35,7 @@ function ControlPickerMirror() {
         setTimeout(() => setShowTooltip(true), 0);
       }}
     >
-      <section
-        className={styles.colorPicker}
-      >
+      <section className={styles.colorPicker}>
         <input
           onChange={(e) => colorHandler(e)}
           style={{ visibility: "hidden" }}
@@ -50,10 +56,10 @@ function ControlPickerMirror() {
           data-for="main"
           data-tip="Primary Color"
           id="primary"
-          onClick={() => {
-            setWhichColor("primary");
-            colorRef.current.click();
-          }}
+          tabIndex={0}
+          onBlur={() => setShowTooltip(false)}
+          onKeyDown={(e) => e.key === "Enter" && onPrimaryClick()}
+          onClick={onPrimaryClick}
         ></div>
         <div
           style={{ backgroundColor: color.secondary }}
@@ -69,10 +75,10 @@ function ControlPickerMirror() {
           //----------------------------------------------
           data-for="main"
           data-tip="Secondary Color"
-          onClick={() => {
-            setWhichColor("secondary");
-            colorRef.current.click();
-          }}
+          tabIndex={0}
+          onBlur={() => setShowTooltip(false)}
+          onKeyDown={(e) => e.key === "Enter" && onSecondaryClick()}
+          onClick={onSecondaryClick}
         ></div>
         <TbArrowsDiagonal2
           id="arrow"
@@ -100,7 +106,14 @@ function ControlPickerMirror() {
         }}
         //----------------------------------------------
         data-for="main"
+        tabIndex={0}
+        onBlur={() => setShowTooltip(false)}
         data-tip="mirror"
+        onKeyDown={(e) =>
+          e.key === "Enter" && mirrorClickable
+            ? dispatch({ type: "MIRROR" })
+            : () => {}
+        }
         onClick={() =>
           mirrorClickable ? dispatch({ type: "MIRROR" }) : () => {}
         }

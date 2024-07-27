@@ -29,7 +29,7 @@ function FramesNControl() {
       type: "FRAME_ADD",
       payload: { image: image, grid: gridArr, currIndex: currIndex },
     });
-    gridObj.drawBlank()
+    gridObj.drawBlank();
   };
   const removeFramehandler = () => {
     if (allFrames.length === 1) {
@@ -85,10 +85,7 @@ function FramesNControl() {
         >
           Frames({currIndex + 1}/{allFrames.length})
         </Button>
-        <Button
-          className={styles.frameControlButton}
-          onClick={frameAddHandler}
-        >
+        <Button className={styles.frameControlButton} onClick={frameAddHandler}>
           <FiPlus className={styles.icon} /> Add Frame
         </Button>
         <Button
@@ -117,8 +114,8 @@ function FramesNControl() {
         animate={
           showFrames
             ? {
-              height: ["0px", "164px"],
-            }
+                height: ["0px", "164px"],
+              }
             : {}
         }
         transition={{ duration: 0.5 }}
@@ -128,13 +125,31 @@ function FramesNControl() {
         <div className={styles.controlFrame}>
           <section>CONTROLS</section>
           <section className={styles.controlFrameIcon}>
-            <FiTrash2 onClick={removeFramehandler} />
+            <FiTrash2 tabIndex={0} onClick={removeFramehandler} />
           </section>
-          <section className={`${currIndex === 0 && styles.disabled} ${styles.controlFrameIcon}`}>
-            <FiArrowLeft className={currIndex === 0 && styles.disabled} onClick={moveFrameLeftHandler} />
+          <section
+            className={`${currIndex === 0 && styles.disabled} ${
+              styles.controlFrameIcon
+            }`}
+          >
+            <FiArrowLeft
+              tabIndex={0}
+              className={currIndex === 0 && styles.disabled}
+              onClick={moveFrameLeftHandler}
+              onKeyDown={(e) => e.key === "Enter" && moveFrameLeftHandler()}
+            />
           </section>
-          <section className={`${currIndex === allFrames.length - 1 && styles.disabled} ${styles.controlFrameIcon}`}>
-            <FiArrowRight className={currIndex === allFrames.length - 1 && styles.disabled} onClick={moveFrameRightHandler} />
+          <section
+            className={`${
+              currIndex === allFrames.length - 1 && styles.disabled
+            } ${styles.controlFrameIcon}`}
+          >
+            <FiArrowRight
+              tabIndex={0}
+              className={currIndex === allFrames.length - 1 && styles.disabled}
+              onClick={moveFrameRightHandler}
+              onKeyDown={(e) => e.key === "Enter" && moveFrameRightHandler()}
+            />
           </section>
         </div>
         <motion.ul className={styles.allFrames}>
