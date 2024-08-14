@@ -4,8 +4,7 @@ import Animate from "./components/Animate/Animate";
 
 function App() {
   useEffect(() => {
-    const analytics = document.createElement("script");
-    analytics.innerHTML = `
+    document.head.innerHTML += `
     <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-6K8VLYHK37"></script>
 <script>
@@ -16,7 +15,6 @@ function App() {
   gtag('config', 'G-6K8VLYHK37');
 </script>
     `;
-    document.body.appendChild(analytics);
   }, []);
   return (
     <div className="App" onContextMenu={(e) => e.preventDefault()}>
